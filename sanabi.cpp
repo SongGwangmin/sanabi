@@ -114,9 +114,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		map.bottom = bmp.bmHeight;
 		map.top = 0;
 
-		player.rt.top = map.bottom - ymiddle;
+
+		px = xmiddle;
+		py = map.bottom - ymiddle;
+
+		player.rt.top = py - 40;
 		player.rt.bottom = player.rt.top + 80;
-		player.rt.left = xmiddle;
+		player.rt.left = px - 40;
 		player.rt.right = player.rt.left + 80;
 	}
 	break;
@@ -150,8 +154,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		// 15 - width, 15 - height, 16 - sprites space(width and height)
 
 		//StretchBlt(mDC, 0, 0, 150, 150, hMemDC, 0, 0, 15, 15, SRCCOPY);
+
+		player.rt.top = py - 40;
+		player.rt.bottom = player.rt.top + 80;
+		player.rt.left = px - 40;
+		player.rt.right = player.rt.left + 80;
+		/*
 		int carmerax = player.rt.left + 40;
-		int carmeray = player.rt.top + 40;
+		int carmeray = player.rt.top + 40;*/
+
+
+		int carmerax = px;
+		int carmeray = py;
+
+		if (carmerax < xmiddle) {
+			carmerax = xmiddle;
+		}
+		if (carmeray + ymiddle > bmp.bmHeight) {
+			carmeray -= carmeray + ymiddle - bmp.bmHeight;
+		}
 
 		int pp = carmerax - map.left + xmiddle;
 		int pq = carmeray - map.top + ymiddle;
@@ -159,17 +180,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		int qq = map.left - carmerax;
 		int qr = map.top - carmeray;
 
-		TransparentBlt(mDC, map.left - carmerax, map.top - carmeray, bmp.bmWidth, bmp.bmHeight, mapDC, 0, 0, bmp.bmWidth, bmp.bmHeight, RGB(0, 255, 255));
+		int rr = px;
+		int rs = py;
+
+		TransparentBlt(mDC, map.left - carmerax + xmiddle, map.top - carmeray + ymiddle, bmp.bmWidth, bmp.bmHeight, mapDC, 0, 0, bmp.bmWidth, bmp.bmHeight, RGB(0, 255, 255));
 		
 		int spritesxpos = 0;
 		int spritesypos = 0;
 
 		
 		//spritesxpos = 0;
-		TransparentBlt(mDC, carmerax - player.rt.left + xmiddle, carmeray - player.rt.top +  ymiddle, 80, 80, playerDC, spritesxpos, spritesypos, 80, 80, RGB(255, 255, 255));
+		TransparentBlt(mDC, px - carmerax - 40 + xmiddle, py - carmeray - 40 + ymiddle, 80, 80, playerDC, spritesxpos, spritesypos, 80, 80, RGB(255, 255, 255));
 
 		TransparentBlt(mDC, mx - 64, my - 64, 128, 128, cursorDC, spritesxpos, spritesypos, 128, 128, RGB(255, 255, 255));
 
+		Ellipse(mDC, xmiddle - 10, ymiddle - 10, xmiddle + 10, ymiddle + 10);
 		
 		BitBlt(hDC, 0, 0, rect.right, rect.bottom, mDC, 0, 0, SRCCOPY);
 
@@ -197,23 +222,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		}
 
 		if (wParam == 'w') {
-			player.rt.top -= 10;
-			player.rt.bottom -= 10;
+			py -= 10;
 		}
 
 		if (wParam == 's') {
-			player.rt.top += 10;
-			player.rt.bottom += 10;
+			py += 10;
 		}
 
 		if (wParam == 'a') {
-			player.rt.left -= 10;
-			player.rt.right -= 10;
+			px -= 10;
 		}
 
 		if (wParam == 'd') {
-			player.rt.left += 10;
-			player.rt.right += 10;
+			px += 10;
 		}
 
 		InvalidateRect(hWnd, NULL, 0);
