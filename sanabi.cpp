@@ -118,6 +118,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		px = xmiddle;
 		py = map.bottom - ymiddle;
 
+
 		player.rt.top = py - 40;
 		player.rt.bottom = player.rt.top + 80;
 		player.rt.left = px - 40;
@@ -144,8 +145,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		(HBITMAP)SelectObject(mapDC, mapbitmap);
 
 
-		hPen = CreatePen(PS_DASHDOT, 2, RGB(255, 0, 0));
-		oldPen = (HPEN)SelectObject(mDC, hPen);
+		hPen = CreatePen(PS_DOT, 1, RGB(0, 255, 255));
+		oldPen = (HPEN)SelectObject(hDC, hPen);
 		hBrush = CreateSolidBrush(RGB(255, 0, 0));
 		oldBrush = (HBRUSH)SelectObject(mDC, hBrush);
 		FillRect(mDC, &rect, hBrush);
@@ -190,14 +191,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		
 		//spritesxpos = 0;
+
+		int prelativex = px - carmerax + xmiddle;
+		int prelativey = py - carmeray + ymiddle;
+
+
 		TransparentBlt(mDC, px - carmerax - 40 + xmiddle, py - carmeray - 40 + ymiddle, 80, 80, playerDC, spritesxpos, spritesypos, 80, 80, RGB(255, 255, 255));
 
 		TransparentBlt(mDC, mx - 64, my - 64, 128, 128, cursorDC, spritesxpos, spritesypos, 128, 128, RGB(255, 255, 255));
 
-		Ellipse(mDC, xmiddle - 10, ymiddle - 10, xmiddle + 10, ymiddle + 10);
 		
-		BitBlt(hDC, 0, 0, rect.right, rect.bottom, mDC, 0, 0, SRCCOPY);
+		
+		/*POINT P[2] = { {prelativex, prelativey},{mx, my} };
+		Polygon(mDC, P, 2);*/
 
+		BitBlt(hDC, 0, 0, rect.right, rect.bottom, mDC, 0, 0, SRCCOPY);
+		MoveToEx(hDC, prelativex, prelativey, NULL);
+		LineTo(hDC, mx, my);
 
 		SelectObject(mDC, oldPen);
 		DeleteObject(hPen);
