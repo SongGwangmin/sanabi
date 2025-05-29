@@ -143,17 +143,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		mDC = CreateCompatibleDC(hDC);
 		hBitmap = CreateCompatibleBitmap(hDC, rect.right, rect.bottom);
 
-		(HBITMAP)SelectObject(mDC, hBitmap);
+		
 
 
 		playerDC = CreateCompatibleDC(mDC);
 		cursorDC = CreateCompatibleDC(mDC);
-		bgDC = CreateCompatibleDC(mDC);
+		//bgDC = CreateCompatibleDC(mDC);
 		mapDC = CreateCompatibleDC(mDC);
 
-		(HBITMAP)SelectObject(playerDC, playerbitmap);
-		(HBITMAP)SelectObject(cursorDC, cursorbitmap);
-		(HBITMAP)SelectObject(mapDC, mapbitmap);
+		HBITMAP oldBitmap, oldPlayerBitmap, oldCursorBitmap, oldMapBitmap;
+
+		// mDC에 hBitmap 선택
+		oldBitmap = (HBITMAP)SelectObject(mDC, hBitmap);
+
+		// 각 DC에 비트맵 선택
+		oldPlayerBitmap = (HBITMAP)SelectObject(playerDC, playerbitmap);
+		oldCursorBitmap = (HBITMAP)SelectObject(cursorDC, cursorbitmap);
+		oldMapBitmap = (HBITMAP)SelectObject(mapDC, mapbitmap);
 
 
 		hPen = CreatePen(PS_DOT, 1, RGB(0, 255, 255));
@@ -218,10 +224,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		MoveToEx(hDC, prelativex, prelativey, NULL);
 		LineTo(hDC, mx, my);
 
-		SelectObject(mDC, oldPen);
+		SelectObject(hDC, oldPen);
 		DeleteObject(hPen);
 		SelectObject(mDC, oldBrush);
 		DeleteObject(hBrush);
+
+		SelectObject(mDC, oldBitmap);
+		SelectObject(playerDC, oldPlayerBitmap);
+		SelectObject(cursorDC, oldCursorBitmap);
+		SelectObject(mapDC, oldMapBitmap);
 
 		DeleteDC(mDC);
 		DeleteDC(playerDC);
