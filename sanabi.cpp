@@ -113,9 +113,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		srand(time(NULL));
 
 		mapbitmap = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_BITMAP1));
-		playerbitmap = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_BITMAP2));;
-		cursorbitmap = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_BITMAP4));;
-		//hBitmap2 = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_BITMAP2));
+		playerbitmap = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_BITMAP2));
+		cursorbitmap = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_BITMAP4));
+		bgbitmap = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_BITMAP5));
 		xmiddle = rect.right / 2;
 		ymiddle = rect.bottom / 2;
 		GetObject(mapbitmap, sizeof(BITMAP), &bmp);
@@ -138,7 +138,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	break;
 	case WM_PAINT:
 	{
-
+		GetClientRect(hWnd, &rect);
 		hDC = BeginPaint(hWnd, &ps);
 		mDC = CreateCompatibleDC(hDC);
 		hBitmap = CreateCompatibleBitmap(hDC, rect.right, rect.bottom);
@@ -148,10 +148,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		playerDC = CreateCompatibleDC(mDC);
 		cursorDC = CreateCompatibleDC(mDC);
-		//bgDC = CreateCompatibleDC(mDC);
+		bgDC = CreateCompatibleDC(mDC);
 		mapDC = CreateCompatibleDC(mDC);
 
-		HBITMAP oldBitmap, oldPlayerBitmap, oldCursorBitmap, oldMapBitmap;
+		HBITMAP oldBitmap, oldBgBitmap, oldPlayerBitmap, oldCursorBitmap, oldMapBitmap;
 
 		// mDC에 hBitmap 선택
 		oldBitmap = (HBITMAP)SelectObject(mDC, hBitmap);
@@ -160,6 +160,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		oldPlayerBitmap = (HBITMAP)SelectObject(playerDC, playerbitmap);
 		oldCursorBitmap = (HBITMAP)SelectObject(cursorDC, cursorbitmap);
 		oldMapBitmap = (HBITMAP)SelectObject(mapDC, mapbitmap);
+		oldBgBitmap = (HBITMAP)SelectObject(bgDC, bgbitmap);
 
 
 		hPen = CreatePen(PS_DOT, 1, RGB(0, 255, 255));
@@ -167,11 +168,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		hBrush = CreateSolidBrush(RGB(255, 0, 0));
 		oldBrush = (HBRUSH)SelectObject(mDC, hBrush);
 		FillRect(mDC, &rect, hBrush);
-		//BitBlt(hDC, 0, 0, xtri * 3, ytri * 3, hMemDC, 0, 0, SRCCOPY);
-		//BitBlt(hDC, xtri, 0, xtri, ytri, hMemDC, xtri, 0, SRCCOPY);
-		// 15 - width, 15 - height, 16 - sprites space(width and height)
-
-		//StretchBlt(mDC, 0, 0, 150, 150, hMemDC, 0, 0, 15, 15, SRCCOPY);
+		
+		StretchBlt(mDC, 0, 0, rect.right, rect.bottom + 202, bgDC, 0, 0, 582, rect.bottom, SRCCOPY);
 
 		player.rt.top = py - 40;
 		player.rt.bottom = player.rt.top + 80;
@@ -188,13 +186,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		if (carmerax < xmiddle) {
 			carmerax = xmiddle;
 		}
-		if (carmeray + ymiddle > bmp.bmHeight) {
+		if (carmeray + ymiddle > bmp.bmHeight) { // 보스맵 바닥 y좌표 1331
 			carmeray -= carmeray + ymiddle - bmp.bmHeight;
 		}
 
 		
 
-		TransparentBlt(mDC, map.left - carmerax + xmiddle, map.top - carmeray + ymiddle, bmp.bmWidth, bmp.bmHeight, mapDC, 0, 0, bmp.bmWidth, bmp.bmHeight, RGB(0, 255, 255));
+		TransparentBlt(mDC, map.left - carmerax + xmiddle, map.top - carmeray + ymiddle, bmp.bmWidth, bmp.bmHeight, mapDC, 0, 0, bmp.bmWidth, bmp.bmHeight, RGB(255, 255, 255));
 		
 		int spritesxpos = 0;
 		int spritesypos = 0;
@@ -207,7 +205,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 
 		TransparentBlt(mDC, px - carmerax - 40 + xmiddle, py - carmeray - 40 + ymiddle, 80, 80, playerDC, spritesxpos, spritesypos, 80, 80, RGB(255, 255, 255));
-
+		SelectObject(playerDC, oldPlayerBitmap);
 		if (wireon) {
 			mx = anchorx - carmerax + xmiddle;
 			my = anchory - carmeray + ymiddle;
@@ -230,14 +228,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		DeleteObject(hBrush);
 
 		SelectObject(mDC, oldBitmap);
-		SelectObject(playerDC, oldPlayerBitmap);
+		
 		SelectObject(cursorDC, oldCursorBitmap);
 		SelectObject(mapDC, oldMapBitmap);
+		SelectObject(bgDC, oldBgBitmap);
 
 		DeleteDC(mDC);
 		DeleteDC(playerDC);
 		DeleteDC(cursorDC);
 		DeleteDC(mapDC);
+		DeleteDC(bgDC);
 
 		EndPaint(hWnd, &ps);
 		break;
