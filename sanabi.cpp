@@ -8,6 +8,7 @@
 #include <list>
 #include "Resource.h"
 #include "pch.cpp"
+#include "block.h"
 #pragma comment (lib, "msimg32.lib")
 
 
@@ -109,7 +110,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	case WM_CREATE:
 	{
 		GetClientRect(hWnd, &rect);
-
+		init_blocks();
 		srand(time(NULL));
 
 		mapbitmap = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_BITMAP1));
@@ -128,7 +129,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		px = xmiddle;
 		py = map.bottom - ymiddle;
-
+		//py = ymiddle;
 
 		player.rt.top = py - 40;
 		player.rt.bottom = player.rt.top + 80;
@@ -190,7 +191,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			carmeray -= carmeray + ymiddle - bmp.bmHeight;
 		}
 
-		
+		/*anchorx = mx;
+		anchory = my;
+
+
+		anchorx -= xmiddle;
+		anchory -= ymiddle;
+		anchorx += carmerax;
+		anchory += carmeray;*/
 
 		TransparentBlt(mDC, map.left - carmerax + xmiddle, map.top - carmeray + ymiddle, bmp.bmWidth, bmp.bmHeight, mapDC, 0, 0, bmp.bmWidth, bmp.bmHeight, RGB(255, 255, 255));
 		
@@ -205,14 +213,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 
 		TransparentBlt(mDC, px - carmerax - 40 + xmiddle, py - carmeray - 40 + ymiddle, 80, 80, playerDC, spritesxpos, spritesypos, 80, 80, RGB(255, 255, 255));
-		SelectObject(playerDC, oldPlayerBitmap);
 		if (wireon) {
 			mx = anchorx - carmerax + xmiddle;
 			my = anchory - carmeray + ymiddle;
 		}
 
-		TransparentBlt(mDC, mx - 64, my - 64, 128, 128, cursorDC, spritesxpos, spritesypos, 128, 128, RGB(255, 255, 255));
+		int anchorinblock = 0;
 
+		POINT anchorp = { anchorx, anchory };
+		for (int i = 0; i < 147; ++i) {
+			if (PtInRect(&blocks[i].rt, anchorp))
+				anchorinblock = 1;
+		}
+
+		if (anchorinblock) {
+			TransparentBlt(mDC, mx - 64, my - 64, 128, 128, cursorDC, spritesxpos, spritesypos, 128, 128, RGB(255, 255, 255));
+		}
+		else {
+			TransparentBlt(mDC, mx - 64, my - 64, 128, 128, cursorDC, 128, spritesypos, 128, 128, RGB(255, 255, 255));
+		}
 		
 		
 		/*POINT P[2] = { {prelativex, prelativey},{mx, my} };
@@ -222,22 +241,30 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		MoveToEx(hDC, prelativex, prelativey, NULL);
 		LineTo(hDC, mx, my);
 
+		wsprintf(temp, L"x = %d y = %d", anchorx, anchory);
+		TextOut(hDC, xmiddle, ymiddle, temp, lstrlen(temp));
+
 		SelectObject(hDC, oldPen);
 		DeleteObject(hPen);
 		SelectObject(mDC, oldBrush);
 		DeleteObject(hBrush);
 
-		SelectObject(mDC, oldBitmap);
 		
+		SelectObject(mDC, oldBitmap);
+		SelectObject(playerDC, oldPlayerBitmap);
 		SelectObject(cursorDC, oldCursorBitmap);
 		SelectObject(mapDC, oldMapBitmap);
 		SelectObject(bgDC, oldBgBitmap);
+
+		DeleteObject(hBitmap);
 
 		DeleteDC(mDC);
 		DeleteDC(playerDC);
 		DeleteDC(cursorDC);
 		DeleteDC(mapDC);
 		DeleteDC(bgDC);
+
+
 
 		EndPaint(hWnd, &ps);
 		break;
@@ -246,7 +273,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	case WM_CHAR:
 		hDC = GetDC(hWnd);
 
-		
+		if (wParam == 'p') {
+			int ki = anchorx;
+			int vv = anchory;
+		}
+
 		if (wParam == 'q') {
 			PostQuitMessage(0);
 		}
@@ -353,6 +384,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEMOVE:
 		mx = LOWORD(lParam);
 		my = HIWORD(lParam);
+
+
+		if (!wireon) {
+			anchorx = mx;
+			anchory = my;
+
+
+			anchorx -= xmiddle;
+			anchory -= ymiddle;
+			anchorx += carmerax;
+			anchory += carmeray;
+		}
 		InvalidateRect(hWnd, NULL, 0);
 
 		break;
