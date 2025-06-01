@@ -212,7 +212,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		prelativey = py - carmeray + ymiddle;
 
 
-		TransparentBlt(mDC, px - carmerax - 40 + xmiddle, py - carmeray - 40 + ymiddle, 80, 80, playerDC, spritesxpos, spritesypos, 80, 80, RGB(255, 255, 255));
+		//TransparentBlt(mDC, px - carmerax - 40 + xmiddle, py - carmeray - 40 + ymiddle, 80, 80, playerDC, spritesxpos, spritesypos, 80, 80, RGB(255, 255, 255));
+		TransparentBlt(mDC, prelativex - 40, prelativey - 40, 80, 80, playerDC, spritesxpos, spritesypos, 80, 80, RGB(255, 255, 255));
 		if (wireon) {
 			mx = anchorx - carmerax + xmiddle;
 			my = anchory - carmeray + ymiddle;
@@ -220,17 +221,46 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		int anchorinblock = 0;
 
-		POINT anchorp = { anchorx, anchory };
-		for (int i = 0; i < 147; ++i) {
-			if (PtInRect(&blocks[i].rt, anchorp))
-				anchorinblock = 1;
+		if (!wireon) {
+			POINT anchorp = { anchorx, anchory };
+			double imradian = atan2(anchory - py, anchorx - px);
+			int wirelength;
+			for (wirelength = 0; wirelength < 500; ++wirelength) {
+				anchorp.x = px + cos(imradian) * wirelength;
+				anchorp.y = py + sin(imradian) * wirelength;
+
+				int chk = 0;
+				for (int i = 0; i < 147; ++i) {
+					if (PtInRect(&blocks[i].rt, anchorp)) {
+						if (blocks[i].grass_plag == TRUE) {
+							anchorinblock = 1;
+						}
+						anchorx = anchorp.x;
+						anchory = anchorp.y;
+						chk = 1;
+						break;
+					}
+				}
+				if (chk) {
+					break;
+				}
+			}
 		}
+		/*anchorp.x = px;
+		anchorp.y = py;*/
+
+		
+
+		
+
+		mx = anchorx - carmerax + xmiddle;
+		my = anchory - carmeray + ymiddle;
 
 		if (anchorinblock) {
 			TransparentBlt(mDC, mx - 64, my - 64, 128, 128, cursorDC, spritesxpos, spritesypos, 128, 128, RGB(255, 255, 255));
 		}
 		else {
-			TransparentBlt(mDC, mx - 64, my - 64, 128, 128, cursorDC, 128, spritesypos, 128, 128, RGB(255, 255, 255));
+			TransparentBlt(mDC, mx - 32, my - 32, 64, 64, cursorDC, 128, spritesypos, 128, 128, RGB(255, 255, 255));
 		}
 		
 		
@@ -358,15 +388,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		radian = atan2(my - prelativex, mx - prelativey);
 		//length = sqrt(((mx - player.x1) * (mx - player.x1)) + ((my - player.y1) * (my - player.y1)));
-		length = hypot(mx - prelativex, my - prelativey);
-		anchorx = mx;
+		length = hypot(px - anchorx, py - anchory);
+		/*anchorx = mx;
 		anchory = my;
 
 
 		anchorx -= xmiddle;
 		anchory -= ymiddle;
 		anchorx += carmerax;
-		anchory += carmeray;
+		anchory += carmeray;*/
 
 		if (anchorx > px) {
 			direction = 1; // 반시계

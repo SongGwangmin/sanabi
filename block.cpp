@@ -9,7 +9,7 @@ void init_blocks() {
     blocks[0].rt.bottom = 7874;
     blocks[0].lava_plag = FALSE;
     blocks[0].floor_plag = FALSE;
-    blocks[0].grass_plag = FALSE;
+    blocks[0].grass_plag = TRUE;
 
     blocks[1].rt.left = 176;
     blocks[1].rt.top = 7876;
@@ -17,7 +17,7 @@ void init_blocks() {
     blocks[1].rt.bottom = 7905;
     blocks[1].lava_plag = FALSE;
     blocks[1].floor_plag = FALSE;
-    blocks[1].grass_plag = FALSE;
+    blocks[1].grass_plag = TRUE;
 
     blocks[2].rt.left = 710;
     blocks[2].rt.top = 7747;
@@ -25,7 +25,7 @@ void init_blocks() {
     blocks[2].rt.bottom = 7905;
     blocks[2].lava_plag = FALSE;
     blocks[2].floor_plag = FALSE;
-    blocks[2].grass_plag = FALSE;
+    blocks[2].grass_plag = TRUE;
 
     blocks[3].rt.left = 722;
     blocks[3].rt.top = 7747;
@@ -33,7 +33,7 @@ void init_blocks() {
     blocks[3].rt.bottom = 7776;
     blocks[3].lava_plag = FALSE;
     blocks[3].floor_plag = FALSE;
-    blocks[3].grass_plag = FALSE;
+    blocks[3].grass_plag = TRUE;
 
     blocks[4].rt.left = 1372;
     blocks[4].rt.top = 7618;
@@ -41,7 +41,7 @@ void init_blocks() {
     blocks[4].rt.bottom = 7746;
     blocks[4].lava_plag = FALSE;
     blocks[4].floor_plag = FALSE;
-    blocks[4].grass_plag = FALSE;
+    blocks[4].grass_plag = TRUE;
 
     blocks[5].rt.left = 1407;
     blocks[5].rt.top = 7618;
@@ -49,7 +49,7 @@ void init_blocks() {
     blocks[5].rt.bottom = 7650;
     blocks[5].lava_plag = FALSE;
     blocks[5].floor_plag = FALSE;
-    blocks[5].grass_plag = FALSE;
+    blocks[5].grass_plag = TRUE;
 
     blocks[6].rt.left = 1693;
     blocks[6].rt.top = 7618;
@@ -57,7 +57,7 @@ void init_blocks() {
     blocks[6].rt.bottom = 7682;
     blocks[6].lava_plag = FALSE;
     blocks[6].floor_plag = FALSE;
-    blocks[6].grass_plag = FALSE;
+    blocks[6].grass_plag = TRUE;
 
     blocks[7].rt.left = 1710;
     blocks[7].rt.top = 7650;
@@ -65,7 +65,7 @@ void init_blocks() {
     blocks[7].rt.bottom = 7682;
     blocks[7].lava_plag = FALSE;
     blocks[7].floor_plag = FALSE;
-    blocks[7].grass_plag = FALSE;
+    blocks[7].grass_plag = TRUE;
 
     blocks[8].rt.left = 2815;
     blocks[8].rt.top = 7492;
@@ -73,7 +73,7 @@ void init_blocks() {
     blocks[8].rt.bottom = 7682;
     blocks[8].lava_plag = FALSE;
     blocks[8].floor_plag = FALSE;
-    blocks[8].grass_plag = FALSE;
+    blocks[8].grass_plag = TRUE;
 
     blocks[9].rt.left = 2851;
     blocks[9].rt.top = 7490;
@@ -81,7 +81,7 @@ void init_blocks() {
     blocks[9].rt.bottom = 7522;
     blocks[9].lava_plag = FALSE;
     blocks[9].floor_plag = FALSE;
-    blocks[9].grass_plag = FALSE;
+    blocks[9].grass_plag = TRUE;
 
     blocks[10].rt.left = 3255;
     blocks[10].rt.top = 7458;
@@ -89,7 +89,7 @@ void init_blocks() {
     blocks[10].rt.bottom = 7522;
     blocks[10].lava_plag = FALSE;
     blocks[10].floor_plag = FALSE;
-    blocks[10].grass_plag = FALSE;
+    blocks[10].grass_plag = TRUE;
 
     blocks[11].rt.left = 3288;
     blocks[11].rt.top = 7459;
@@ -97,7 +97,7 @@ void init_blocks() {
     blocks[11].rt.bottom = 7493;
     blocks[11].lava_plag = FALSE;
     blocks[11].floor_plag = FALSE;
-    blocks[11].grass_plag = FALSE;
+    blocks[11].grass_plag = TRUE;
 
     blocks[12].rt.left = 3436;
     blocks[12].rt.top = 7459;
@@ -105,7 +105,7 @@ void init_blocks() {
     blocks[12].rt.bottom = 7969;
     blocks[12].lava_plag = FALSE;
     blocks[12].floor_plag = FALSE;
-    blocks[12].grass_plag = FALSE;
+    blocks[12].grass_plag = TRUE;
 
     blocks[13].rt.left = 3472;
     blocks[13].rt.top = 7937;
@@ -113,7 +113,7 @@ void init_blocks() {
     blocks[13].rt.bottom = 7969;
     blocks[13].lava_plag = FALSE;
     blocks[13].floor_plag = FALSE;
-    blocks[13].grass_plag = FALSE;
+    blocks[13].grass_plag = TRUE;
 
     blocks[14].rt.left = 3836;
     blocks[14].rt.top = 7937;
@@ -121,13 +121,13 @@ void init_blocks() {
     blocks[14].rt.bottom = 7969;
     blocks[14].lava_plag = FALSE;
     blocks[14].floor_plag = FALSE;
-    blocks[14].grass_plag = FALSE;
+    blocks[14].grass_plag = TRUE;
 
     blocks[15].rt.left = 3856;
     blocks[15].rt.top = 7963;
     blocks[15].rt.right = 4365;
     blocks[15].rt.bottom = 7997;
-    blocks[15].lava_plag = FALSE;
+    blocks[15].lava_plag = TRUE;
     blocks[15].floor_plag = FALSE;
     blocks[15].grass_plag = FALSE;
 
@@ -135,7 +135,7 @@ void init_blocks() {
     blocks[16].rt.top = 7882;
     blocks[16].rt.right = 4761;
     blocks[16].rt.bottom = 7913;
-    blocks[16].lava_plag = FALSE;
+    blocks[16].lava_plag = TRUE;
     blocks[16].floor_plag = FALSE;
     blocks[16].grass_plag = FALSE;
 
@@ -145,7 +145,7 @@ void init_blocks() {
     blocks[17].rt.bottom = 7883;
     blocks[17].lava_plag = FALSE;
     blocks[17].floor_plag = FALSE;
-    blocks[17].grass_plag = FALSE;
+    blocks[17].grass_plag = TRUE;
 
     blocks[18].rt.left = 4763;
     blocks[18].rt.top = 7000;
@@ -177,7 +177,7 @@ void init_blocks() {
     blocks[21].rt.bottom = 6999;
     blocks[21].lava_plag = FALSE;
     blocks[21].floor_plag = FALSE;
-    blocks[21].grass_plag = FALSE;
+    blocks[21].grass_plag = TRUE;
 
     blocks[22].rt.left = 4163;
     blocks[22].rt.top = 6720;
@@ -185,7 +185,7 @@ void init_blocks() {
     blocks[22].rt.bottom = 6754;
     blocks[22].lava_plag = FALSE;
     blocks[22].floor_plag = FALSE;
-    blocks[22].grass_plag = FALSE;
+    blocks[22].grass_plag = TRUE;
 
     blocks[23].rt.left = 4467;
     blocks[23].rt.top = 6720;
@@ -193,7 +193,7 @@ void init_blocks() {
     blocks[23].rt.bottom = 6796;
     blocks[23].lava_plag = FALSE;
     blocks[23].floor_plag = FALSE;
-    blocks[23].grass_plag = FALSE;
+    blocks[23].grass_plag = TRUE;
 
     blocks[24].rt.left = 4484;
     blocks[24].rt.top = 6762;
@@ -201,13 +201,13 @@ void init_blocks() {
     blocks[24].rt.bottom = 6796;
     blocks[24].lava_plag = FALSE;
     blocks[24].floor_plag = FALSE;
-    blocks[24].grass_plag = FALSE;
+    blocks[24].grass_plag = TRUE;
 
     blocks[25].rt.left = 5584;
     blocks[25].rt.top = 6782;
     blocks[25].rt.right = 5810;
     blocks[25].rt.bottom = 6805;
-    blocks[25].lava_plag = FALSE;
+    blocks[25].lava_plag = TRUE;
     blocks[25].floor_plag = FALSE;
     blocks[25].grass_plag = FALSE;
 
@@ -217,7 +217,7 @@ void init_blocks() {
     blocks[26].rt.bottom = 6771;
     blocks[26].lava_plag = FALSE;
     blocks[26].floor_plag = FALSE;
-    blocks[26].grass_plag = FALSE;
+    blocks[26].grass_plag = TRUE;
 
     blocks[27].rt.left = 5425;
     blocks[27].rt.top = 6180;
@@ -225,7 +225,7 @@ void init_blocks() {
     blocks[27].rt.bottom = 6216;
     blocks[27].lava_plag = FALSE;
     blocks[27].floor_plag = FALSE;
-    blocks[27].grass_plag = FALSE;
+    blocks[27].grass_plag = TRUE;
 
     blocks[28].rt.left = 5388;
     blocks[28].rt.top = 6033;
@@ -233,7 +233,7 @@ void init_blocks() {
     blocks[28].rt.bottom = 6216;
     blocks[28].lava_plag = FALSE;
     blocks[28].floor_plag = FALSE;
-    blocks[28].grass_plag = FALSE;
+    blocks[28].grass_plag = TRUE;
 
     blocks[29].rt.left = 5425;
     blocks[29].rt.top = 6034;
@@ -241,7 +241,7 @@ void init_blocks() {
     blocks[29].rt.bottom = 6069;
     blocks[29].lava_plag = FALSE;
     blocks[29].floor_plag = FALSE;
-    blocks[29].grass_plag = FALSE;
+    blocks[29].grass_plag = TRUE;
 
     blocks[30].rt.left = 6417;
     blocks[30].rt.top = 5924;
@@ -257,7 +257,7 @@ void init_blocks() {
     blocks[31].rt.bottom = 5923;
     blocks[31].lava_plag = FALSE;
     blocks[31].floor_plag = FALSE;
-    blocks[31].grass_plag = FALSE;
+    blocks[31].grass_plag = TRUE;
 
     blocks[32].rt.left = 6440;
     blocks[32].rt.top = 5651;
@@ -265,13 +265,13 @@ void init_blocks() {
     blocks[32].rt.bottom = 5686;
     blocks[32].lava_plag = FALSE;
     blocks[32].floor_plag = FALSE;
-    blocks[32].grass_plag = FALSE;
+    blocks[32].grass_plag = TRUE;
 
     blocks[33].rt.left = 6551;
     blocks[33].rt.top = 5670;
     blocks[33].rt.right = 6682;
     blocks[33].rt.bottom = 5686;
-    blocks[33].lava_plag = FALSE;
+    blocks[33].lava_plag = TRUE;
     blocks[33].floor_plag = FALSE;
     blocks[33].grass_plag = FALSE;
 
@@ -289,7 +289,7 @@ void init_blocks() {
     blocks[35].rt.bottom = 5540;
     blocks[35].lava_plag = FALSE;
     blocks[35].floor_plag = FALSE;
-    blocks[35].grass_plag = FALSE;
+    blocks[35].grass_plag = TRUE;
 
     blocks[36].rt.left = 6706;
     blocks[36].rt.top = 5204;
@@ -297,7 +297,7 @@ void init_blocks() {
     blocks[36].rt.bottom = 5237;
     blocks[36].lava_plag = FALSE;
     blocks[36].floor_plag = FALSE;
-    blocks[36].grass_plag = FALSE;
+    blocks[36].grass_plag = TRUE;
 
     blocks[37].rt.left = 7031;
     blocks[37].rt.top = 5204;
@@ -305,7 +305,7 @@ void init_blocks() {
     blocks[37].rt.bottom = 5596;
     blocks[37].lava_plag = FALSE;
     blocks[37].floor_plag = FALSE;
-    blocks[37].grass_plag = FALSE;
+    blocks[37].grass_plag = TRUE;
 
     blocks[38].rt.left = 7049;
     blocks[38].rt.top = 5597;
@@ -313,7 +313,7 @@ void init_blocks() {
     blocks[38].rt.bottom = 5630;
     blocks[38].lava_plag = FALSE;
     blocks[38].floor_plag = FALSE;
-    blocks[38].grass_plag = FALSE;
+    blocks[38].grass_plag = TRUE;
 
     blocks[39].rt.left = 7228;
     blocks[39].rt.top = 5597;
@@ -321,13 +321,13 @@ void init_blocks() {
     blocks[39].rt.bottom = 5691;
     blocks[39].lava_plag = FALSE;
     blocks[39].floor_plag = FALSE;
-    blocks[39].grass_plag = FALSE;
+    blocks[39].grass_plag = TRUE;
 
     blocks[40].rt.left = 7261;
     blocks[40].rt.top = 5669;
     blocks[40].rt.right = 7689;
     blocks[40].rt.bottom = 5691;
-    blocks[40].lava_plag = FALSE;
+    blocks[40].lava_plag = TRUE;
     blocks[40].floor_plag = FALSE;
     blocks[40].grass_plag = FALSE;
 
@@ -337,7 +337,7 @@ void init_blocks() {
     blocks[41].rt.bottom = 5691;
     blocks[41].lava_plag = FALSE;
     blocks[41].floor_plag = FALSE;
-    blocks[41].grass_plag = FALSE;
+    blocks[41].grass_plag = TRUE;
 
     blocks[42].rt.left = 7687;
     blocks[42].rt.top = 5018;
@@ -345,7 +345,7 @@ void init_blocks() {
     blocks[42].rt.bottom = 5656;
     blocks[42].lava_plag = FALSE;
     blocks[42].floor_plag = FALSE;
-    blocks[42].grass_plag = FALSE;
+    blocks[42].grass_plag = TRUE;
 
     blocks[43].rt.left = 7721;
     blocks[43].rt.top = 5018;
@@ -353,7 +353,7 @@ void init_blocks() {
     blocks[43].rt.bottom = 5054;
     blocks[43].lava_plag = FALSE;
     blocks[43].floor_plag = FALSE;
-    blocks[43].grass_plag = FALSE;
+    blocks[43].grass_plag = TRUE;
 
     blocks[44].rt.left = 8031;
     blocks[44].rt.top = 4928;
@@ -361,7 +361,7 @@ void init_blocks() {
     blocks[44].rt.bottom = 5054;
     blocks[44].lava_plag = FALSE;
     blocks[44].floor_plag = FALSE;
-    blocks[44].grass_plag = FALSE;
+    blocks[44].grass_plag = TRUE;
 
     blocks[45].rt.left = 8067;
     blocks[45].rt.top = 4928;
@@ -369,7 +369,7 @@ void init_blocks() {
     blocks[45].rt.bottom = 4964;
     blocks[45].lava_plag = FALSE;
     blocks[45].floor_plag = FALSE;
-    blocks[45].grass_plag = FALSE;
+    blocks[45].grass_plag = TRUE;
 
     blocks[46].rt.left = 8148;
     blocks[46].rt.top = 4928;
@@ -377,7 +377,7 @@ void init_blocks() {
     blocks[46].rt.bottom = 5018;
     blocks[46].lava_plag = FALSE;
     blocks[46].floor_plag = FALSE;
-    blocks[46].grass_plag = FALSE;
+    blocks[46].grass_plag = TRUE;
 
     blocks[47].rt.left = 8184;
     blocks[47].rt.top = 4983;
@@ -385,7 +385,7 @@ void init_blocks() {
     blocks[47].rt.bottom = 5018;
     blocks[47].lava_plag = FALSE;
     blocks[47].floor_plag = FALSE;
-    blocks[47].grass_plag = FALSE;
+    blocks[47].grass_plag = TRUE;
 
     blocks[48].rt.left = 9220;
     blocks[48].rt.top = 4560;
@@ -415,7 +415,7 @@ void init_blocks() {
     blocks[51].rt.top = 4607;
     blocks[51].rt.right = 10566;
     blocks[51].rt.bottom = 4639;
-    blocks[51].lava_plag = FALSE;
+    blocks[51].lava_plag = TRUE;
     blocks[51].floor_plag = FALSE;
     blocks[51].grass_plag = FALSE;
 
@@ -425,7 +425,7 @@ void init_blocks() {
     blocks[52].rt.bottom = 4639;
     blocks[52].lava_plag = FALSE;
     blocks[52].floor_plag = FALSE;
-    blocks[52].grass_plag = FALSE;
+    blocks[52].grass_plag = TRUE;
 
     blocks[53].rt.left = 10566;
     blocks[53].rt.top = 4093;
@@ -433,7 +433,7 @@ void init_blocks() {
     blocks[53].rt.bottom = 4606;
     blocks[53].lava_plag = FALSE;
     blocks[53].floor_plag = FALSE;
-    blocks[53].grass_plag = FALSE;
+    blocks[53].grass_plag = TRUE;
 
     blocks[54].rt.left = 10602;
     blocks[54].rt.top = 4093;
@@ -441,7 +441,7 @@ void init_blocks() {
     blocks[54].rt.bottom = 4127;
     blocks[54].lava_plag = FALSE;
     blocks[54].floor_plag = FALSE;
-    blocks[54].grass_plag = FALSE;
+    blocks[54].grass_plag = TRUE;
 
     blocks[55].rt.left = 11079;
     blocks[55].rt.top = 3669;
@@ -457,7 +457,7 @@ void init_blocks() {
     blocks[56].rt.bottom = 3701;
     blocks[56].lava_plag = FALSE;
     blocks[56].floor_plag = FALSE;
-    blocks[56].grass_plag = FALSE;
+    blocks[56].grass_plag = TRUE;
 
     blocks[57].rt.left = 10701;
     blocks[57].rt.top = 3560;
@@ -465,7 +465,7 @@ void init_blocks() {
     blocks[57].rt.bottom = 3702;
     blocks[57].lava_plag = FALSE;
     blocks[57].floor_plag = FALSE;
-    blocks[57].grass_plag = FALSE;
+    blocks[57].grass_plag = TRUE;
 
     blocks[58].rt.left = 10703;
     blocks[58].rt.top = 2859;
@@ -497,7 +497,7 @@ void init_blocks() {
     blocks[61].rt.bottom = 2836;
     blocks[61].lava_plag = FALSE;
     blocks[61].floor_plag = FALSE;
-    blocks[61].grass_plag = FALSE;
+    blocks[61].grass_plag = TRUE;
 
     blocks[62].rt.left = 5481;
     blocks[62].rt.top = 6421;
@@ -505,7 +505,7 @@ void init_blocks() {
     blocks[62].rt.bottom = 6457;
     blocks[62].lava_plag = FALSE;
     blocks[62].floor_plag = FALSE;
-    blocks[62].grass_plag = FALSE;
+    blocks[62].grass_plag = TRUE;
 
     blocks[63].rt.left = 5578;
     blocks[63].rt.top = 6421;
@@ -513,7 +513,7 @@ void init_blocks() {
     blocks[63].rt.bottom = 6542;
     blocks[63].lava_plag = FALSE;
     blocks[63].floor_plag = FALSE;
-    blocks[63].grass_plag = FALSE;
+    blocks[63].grass_plag = TRUE;
 
     blocks[64].rt.left = 5481;
     blocks[64].rt.top = 6506;
@@ -521,7 +521,7 @@ void init_blocks() {
     blocks[64].rt.bottom = 6542;
     blocks[64].lava_plag = FALSE;
     blocks[64].floor_plag = FALSE;
-    blocks[64].grass_plag = FALSE;
+    blocks[64].grass_plag = TRUE;
 
     blocks[65].rt.left = 5444;
     blocks[65].rt.top = 6421;
@@ -529,7 +529,7 @@ void init_blocks() {
     blocks[65].rt.bottom = 6542;
     blocks[65].lava_plag = FALSE;
     blocks[65].floor_plag = FALSE;
-    blocks[65].grass_plag = FALSE;
+    blocks[65].grass_plag = TRUE;
 
     blocks[66].rt.left = 0;
     blocks[66].rt.top = 95;
@@ -537,7 +537,7 @@ void init_blocks() {
     blocks[66].rt.bottom = 130;
     blocks[66].lava_plag = FALSE;
     blocks[66].floor_plag = FALSE;
-    blocks[66].grass_plag = FALSE;
+    blocks[66].grass_plag = TRUE;
 
     blocks[67].rt.left = 0;
     blocks[67].rt.top = 481;
@@ -545,7 +545,7 @@ void init_blocks() {
     blocks[67].rt.bottom = 516;
     blocks[67].lava_plag = FALSE;
     blocks[67].floor_plag = FALSE;
-    blocks[67].grass_plag = FALSE;
+    blocks[67].grass_plag = TRUE;
 
     blocks[68].rt.left = 170;
     blocks[68].rt.top = 481;
@@ -553,7 +553,7 @@ void init_blocks() {
     blocks[68].rt.bottom = 579;
     blocks[68].lava_plag = FALSE;
     blocks[68].floor_plag = FALSE;
-    blocks[68].grass_plag = FALSE;
+    blocks[68].grass_plag = TRUE;
 
     blocks[69].rt.left = 0;
     blocks[69].rt.top = 545;
@@ -561,7 +561,7 @@ void init_blocks() {
     blocks[69].rt.bottom = 579;
     blocks[69].lava_plag = FALSE;
     blocks[69].floor_plag = FALSE;
-    blocks[69].grass_plag = FALSE;
+    blocks[69].grass_plag = TRUE;
 
     blocks[70].rt.left = 0;
     blocks[70].rt.top = 836;
@@ -569,7 +569,7 @@ void init_blocks() {
     blocks[70].rt.bottom = 817;
     blocks[70].lava_plag = FALSE;
     blocks[70].floor_plag = FALSE;
-    blocks[70].grass_plag = FALSE;
+    blocks[70].grass_plag = TRUE;
 
     blocks[71].rt.left = 170;
     blocks[71].rt.top = 836;
@@ -577,7 +577,7 @@ void init_blocks() {
     blocks[71].rt.bottom = 934;
     blocks[71].lava_plag = FALSE;
     blocks[71].floor_plag = FALSE;
-    blocks[71].grass_plag = FALSE;
+    blocks[71].grass_plag = TRUE;
 
     blocks[72].rt.left = 0;
     blocks[72].rt.top = 900;
@@ -585,7 +585,7 @@ void init_blocks() {
     blocks[72].rt.bottom = 934;
     blocks[72].lava_plag = FALSE;
     blocks[72].floor_plag = FALSE;
-    blocks[72].grass_plag = FALSE;
+    blocks[72].grass_plag = TRUE;
 
     blocks[73].rt.left = 832;
     blocks[73].rt.top = 390;
@@ -593,7 +593,7 @@ void init_blocks() {
     blocks[73].rt.bottom = 425;
     blocks[73].lava_plag = FALSE;
     blocks[73].floor_plag = FALSE;
-    blocks[73].grass_plag = FALSE;
+    blocks[73].grass_plag = TRUE;
 
     blocks[74].rt.left = 1198;
     blocks[74].rt.top = 390;
@@ -601,7 +601,7 @@ void init_blocks() {
     blocks[74].rt.bottom = 459;
     blocks[74].lava_plag = FALSE;
     blocks[74].floor_plag = FALSE;
-    blocks[74].grass_plag = FALSE;
+    blocks[74].grass_plag = TRUE;
 
     blocks[75].rt.left = 832;
     blocks[75].rt.top = 426;
@@ -609,7 +609,7 @@ void init_blocks() {
     blocks[75].rt.bottom = 459;
     blocks[75].lava_plag = FALSE;
     blocks[75].floor_plag = FALSE;
-    blocks[75].grass_plag = FALSE;
+    blocks[75].grass_plag = TRUE;
 
     blocks[76].rt.left = 799;
     blocks[76].rt.top = 390;
@@ -617,7 +617,7 @@ void init_blocks() {
     blocks[76].rt.bottom = 459;
     blocks[76].lava_plag = FALSE;
     blocks[76].floor_plag = FALSE;
-    blocks[76].grass_plag = FALSE;
+    blocks[76].grass_plag = TRUE;
 
     blocks[77].rt.left = 500;
     blocks[77].rt.top = 832;
@@ -625,7 +625,7 @@ void init_blocks() {
     blocks[77].rt.bottom = 867;
     blocks[77].lava_plag = FALSE;
     blocks[77].floor_plag = FALSE;
-    blocks[77].grass_plag = FALSE;
+    blocks[77].grass_plag = TRUE;
 
     blocks[78].rt.left = 770;
     blocks[78].rt.top = 832;
@@ -633,7 +633,7 @@ void init_blocks() {
     blocks[78].rt.bottom = 900;
     blocks[78].lava_plag = FALSE;
     blocks[78].floor_plag = FALSE;
-    blocks[78].grass_plag = FALSE;
+    blocks[78].grass_plag = TRUE;
 
     blocks[79].rt.left = 500;
     blocks[79].rt.top = 868;
@@ -641,7 +641,7 @@ void init_blocks() {
     blocks[79].rt.bottom = 900;
     blocks[79].lava_plag = FALSE;
     blocks[79].floor_plag = FALSE;
-    blocks[79].grass_plag = FALSE;
+    blocks[79].grass_plag = TRUE;
 
     blocks[80].rt.left = 468;
     blocks[80].rt.top = 832;
@@ -649,7 +649,7 @@ void init_blocks() {
     blocks[80].rt.bottom = 900;
     blocks[80].lava_plag = FALSE;
     blocks[80].floor_plag = FALSE;
-    blocks[80].grass_plag = FALSE;
+    blocks[80].grass_plag = TRUE;
 
     blocks[81].rt.left = 1243;
     blocks[81].rt.top = 829;
@@ -657,7 +657,7 @@ void init_blocks() {
     blocks[81].rt.bottom = 864;
     blocks[81].lava_plag = FALSE;
     blocks[81].floor_plag = FALSE;
-    blocks[81].grass_plag = FALSE;
+    blocks[81].grass_plag = TRUE;
 
     blocks[82].rt.left = 1511;
     blocks[82].rt.top = 829;
@@ -665,7 +665,7 @@ void init_blocks() {
     blocks[82].rt.bottom = 898;
     blocks[82].lava_plag = FALSE;
     blocks[82].floor_plag = FALSE;
-    blocks[82].grass_plag = FALSE;
+    blocks[82].grass_plag = TRUE;
 
     blocks[83].rt.left = 1243;
     blocks[83].rt.top = 865;
@@ -673,7 +673,7 @@ void init_blocks() {
     blocks[83].rt.bottom = 898;
     blocks[83].lava_plag = FALSE;
     blocks[83].floor_plag = FALSE;
-    blocks[83].grass_plag = FALSE;
+    blocks[83].grass_plag = TRUE;
 
     blocks[84].rt.left = 1210;
     blocks[84].rt.top = 829;
@@ -681,7 +681,7 @@ void init_blocks() {
     blocks[84].rt.bottom = 898;
     blocks[84].lava_plag = FALSE;
     blocks[84].floor_plag = FALSE;
-    blocks[84].grass_plag = FALSE;
+    blocks[84].grass_plag = TRUE;
 
     blocks[85].rt.left = 1842;
     blocks[85].rt.top = 459;
@@ -689,7 +689,7 @@ void init_blocks() {
     blocks[85].rt.bottom = 494;
     blocks[85].lava_plag = FALSE;
     blocks[85].floor_plag = FALSE;
-    blocks[85].grass_plag = FALSE;
+    blocks[85].grass_plag = TRUE;
 
     blocks[86].rt.left = 1805;
     blocks[86].rt.top = 459;
@@ -697,7 +697,7 @@ void init_blocks() {
     blocks[86].rt.bottom = 575;
     blocks[86].lava_plag = FALSE;
     blocks[86].floor_plag = FALSE;
-    blocks[86].grass_plag = FALSE;
+    blocks[86].grass_plag = TRUE;
 
     blocks[87].rt.left = 1842;
     blocks[87].rt.top = 541;
@@ -705,7 +705,7 @@ void init_blocks() {
     blocks[87].rt.bottom = 575;
     blocks[87].lava_plag = FALSE;
     blocks[87].floor_plag = FALSE;
-    blocks[87].grass_plag = FALSE;
+    blocks[87].grass_plag = TRUE;
 
     blocks[88].rt.left = 1848;
     blocks[88].rt.top = 820;
@@ -713,7 +713,7 @@ void init_blocks() {
     blocks[88].rt.bottom = 855;
     blocks[88].lava_plag = FALSE;
     blocks[88].floor_plag = FALSE;
-    blocks[88].grass_plag = FALSE;
+    blocks[88].grass_plag = TRUE;
 
     blocks[89].rt.left = 1809;
     blocks[89].rt.top = 820;
@@ -721,7 +721,7 @@ void init_blocks() {
     blocks[89].rt.bottom = 936;
     blocks[89].lava_plag = FALSE;
     blocks[89].floor_plag = FALSE;
-    blocks[89].grass_plag = FALSE;
+    blocks[89].grass_plag = TRUE;
 
     blocks[90].rt.left = 1848;
     blocks[90].rt.top = 902;
@@ -729,7 +729,7 @@ void init_blocks() {
     blocks[90].rt.bottom = 936;
     blocks[90].lava_plag = FALSE;
     blocks[90].floor_plag = FALSE;
-    blocks[90].grass_plag = FALSE;
+    blocks[90].grass_plag = TRUE;
 
     blocks[91].rt.left = 0;
     blocks[91].rt.top = 1205;
@@ -745,7 +745,7 @@ void init_blocks() {
     blocks[92].rt.bottom = 3244;
     blocks[92].lava_plag = FALSE;
     blocks[92].floor_plag = FALSE;
-    blocks[92].grass_plag = FALSE;
+    blocks[92].grass_plag = TRUE;
 
     blocks[93].rt.left = 7868;
     blocks[93].rt.top = 3210;
@@ -753,13 +753,13 @@ void init_blocks() {
     blocks[93].rt.bottom = 3322;
     blocks[93].lava_plag = FALSE;
     blocks[93].floor_plag = FALSE;
-    blocks[93].grass_plag = FALSE;
+    blocks[93].grass_plag = TRUE;
 
     blocks[94].rt.left = 7901;
     blocks[94].rt.top = 3321;
     blocks[94].rt.right = 9628;
     blocks[94].rt.bottom = 3351;
-    blocks[94].lava_plag = FALSE;
+    blocks[94].lava_plag = TRUE;
     blocks[94].floor_plag = FALSE;
     blocks[94].grass_plag = FALSE;
 
@@ -769,7 +769,7 @@ void init_blocks() {
     blocks[95].rt.bottom = 3351;
     blocks[95].lava_plag = FALSE;
     blocks[95].floor_plag = FALSE;
-    blocks[95].grass_plag = FALSE;
+    blocks[95].grass_plag = TRUE;
 
     blocks[96].rt.left = 9664;
     blocks[96].rt.top = 3231;
@@ -777,7 +777,7 @@ void init_blocks() {
     blocks[96].rt.bottom = 3265;
     blocks[96].lava_plag = FALSE;
     blocks[96].floor_plag = FALSE;
-    blocks[96].grass_plag = FALSE;
+    blocks[96].grass_plag = TRUE;
 
     blocks[97].rt.left = 10272;
     blocks[97].rt.top = 3231;
@@ -785,7 +785,7 @@ void init_blocks() {
     blocks[97].rt.bottom = 3473;
     blocks[97].lava_plag = FALSE;
     blocks[97].floor_plag = FALSE;
-    blocks[97].grass_plag = FALSE;
+    blocks[97].grass_plag = TRUE;
 
     blocks[98].rt.left = 10272;
     blocks[98].rt.top = 3474;
@@ -801,7 +801,7 @@ void init_blocks() {
     blocks[99].rt.bottom = 4170;
     blocks[99].lava_plag = FALSE;
     blocks[99].floor_plag = FALSE;
-    blocks[99].grass_plag = FALSE;
+    blocks[99].grass_plag = TRUE;
 
     blocks[100].rt.left = 8792;
     blocks[100].rt.top = 4139;
@@ -809,7 +809,7 @@ void init_blocks() {
     blocks[100].rt.bottom = 4676;
     blocks[100].lava_plag = FALSE;
     blocks[100].floor_plag = FALSE;
-    blocks[100].grass_plag = FALSE;
+    blocks[100].grass_plag = TRUE;
 
     blocks[101].rt.left = 8456;
     blocks[101].rt.top = 4641;
@@ -817,7 +817,7 @@ void init_blocks() {
     blocks[101].rt.bottom = 4676;
     blocks[101].lava_plag = FALSE;
     blocks[101].floor_plag = FALSE;
-    blocks[101].grass_plag = FALSE;
+    blocks[101].grass_plag = TRUE;
 
     blocks[102].rt.left = 8425;
     blocks[102].rt.top = 4641;
@@ -873,7 +873,7 @@ void init_blocks() {
     blocks[108].rt.bottom = 5351;
     blocks[108].lava_plag = FALSE;
     blocks[108].floor_plag = FALSE;
-    blocks[108].grass_plag = FALSE;
+    blocks[108].grass_plag = TRUE;
 
     blocks[109].rt.left = 7239;
     blocks[109].rt.top = 5317;
@@ -881,7 +881,7 @@ void init_blocks() {
     blocks[109].rt.bottom = 5351;
     blocks[109].lava_plag = FALSE;
     blocks[109].floor_plag = FALSE;
-    blocks[109].grass_plag = FALSE;
+    blocks[109].grass_plag = TRUE;
 
     blocks[110].rt.left = 7163;
     blocks[110].rt.top = 5350;
@@ -905,7 +905,7 @@ void init_blocks() {
     blocks[112].rt.bottom = 5913;
     blocks[112].lava_plag = FALSE;
     blocks[112].floor_plag = FALSE;
-    blocks[112].grass_plag = FALSE;
+    blocks[112].grass_plag = TRUE;
 
     blocks[113].rt.left = 5060;
     blocks[113].rt.top = 5880;
@@ -913,7 +913,7 @@ void init_blocks() {
     blocks[113].rt.bottom = 5913;
     blocks[113].lava_plag = FALSE;
     blocks[113].floor_plag = FALSE;
-    blocks[113].grass_plag = FALSE;
+    blocks[113].grass_plag = TRUE;
 
     blocks[114].rt.left = 5035;
     blocks[114].rt.top = 5880;
@@ -929,7 +929,7 @@ void init_blocks() {
     blocks[115].rt.bottom = 6228;
     blocks[115].lava_plag = FALSE;
     blocks[115].floor_plag = FALSE;
-    blocks[115].grass_plag = FALSE;
+    blocks[115].grass_plag = TRUE;
 
     blocks[116].rt.left = 5107;
     blocks[116].rt.top = 6193;
@@ -937,7 +937,7 @@ void init_blocks() {
     blocks[116].rt.bottom = 6528;
     blocks[116].lava_plag = FALSE;
     blocks[116].floor_plag = FALSE;
-    blocks[116].grass_plag = FALSE;
+    blocks[116].grass_plag = TRUE;
 
     blocks[117].rt.left = 4810;
     blocks[117].rt.top = 6494;
@@ -945,7 +945,7 @@ void init_blocks() {
     blocks[117].rt.bottom = 6528;
     blocks[117].lava_plag = FALSE;
     blocks[117].floor_plag = FALSE;
-    blocks[117].grass_plag = FALSE;
+    blocks[117].grass_plag = TRUE;
 
     blocks[118].rt.left = 4352;
     blocks[118].rt.top = 6459;
@@ -953,7 +953,7 @@ void init_blocks() {
     blocks[118].rt.bottom = 6494;
     blocks[118].lava_plag = FALSE;
     blocks[118].floor_plag = FALSE;
-    blocks[118].grass_plag = FALSE;
+    blocks[118].grass_plag = TRUE;
 
     blocks[119].rt.left = 4103;
     blocks[119].rt.top = 6423;
@@ -977,7 +977,7 @@ void init_blocks() {
     blocks[121].rt.bottom = 7019;
     blocks[121].lava_plag = FALSE;
     blocks[121].floor_plag = FALSE;
-    blocks[121].grass_plag = FALSE;
+    blocks[121].grass_plag = TRUE;
 
     blocks[122].rt.left = 3845;
     blocks[122].rt.top = 7020;
@@ -991,7 +991,7 @@ void init_blocks() {
     blocks[123].rt.top = 7306;
     blocks[123].rt.right = 4219;
     blocks[123].rt.bottom = 7339;
-    blocks[123].lava_plag = FALSE;
+    blocks[123].lava_plag = TRUE;
     blocks[123].floor_plag = FALSE;
     blocks[123].grass_plag = FALSE;
 
@@ -1001,7 +1001,7 @@ void init_blocks() {
     blocks[124].rt.bottom = 7324;
     blocks[124].lava_plag = FALSE;
     blocks[124].floor_plag = FALSE;
-    blocks[124].grass_plag = FALSE;
+    blocks[124].grass_plag = TRUE;
 
     blocks[125].rt.left = 4555;
     blocks[125].rt.top = 7291;
@@ -1009,7 +1009,7 @@ void init_blocks() {
     blocks[125].rt.bottom = 7602;
     blocks[125].lava_plag = FALSE;
     blocks[125].floor_plag = FALSE;
-    blocks[125].grass_plag = FALSE;
+    blocks[125].grass_plag = TRUE;
 
     blocks[126].rt.left = 4130;
     blocks[126].rt.top = 7568;
@@ -1017,7 +1017,7 @@ void init_blocks() {
     blocks[126].rt.bottom = 7602;
     blocks[126].lava_plag = FALSE;
     blocks[126].floor_plag = FALSE;
-    blocks[126].grass_plag = FALSE;
+    blocks[126].grass_plag = TRUE;
 
     blocks[127].rt.left = 4095;
     blocks[127].rt.top = 7568;
@@ -1025,7 +1025,7 @@ void init_blocks() {
     blocks[127].rt.bottom = 7682;
     blocks[127].lava_plag = FALSE;
     blocks[127].floor_plag = FALSE;
-    blocks[127].grass_plag = FALSE;
+    blocks[127].grass_plag = TRUE;
 
     blocks[128].rt.left = 3789;
     blocks[128].rt.top = 7647;
@@ -1033,7 +1033,7 @@ void init_blocks() {
     blocks[128].rt.bottom = 7682;
     blocks[128].lava_plag = FALSE;
     blocks[128].floor_plag = FALSE;
-    blocks[128].grass_plag = FALSE;
+    blocks[128].grass_plag = TRUE;
 
     blocks[129].rt.left = 3753;
     blocks[129].rt.top = 7647;
@@ -1041,7 +1041,7 @@ void init_blocks() {
     blocks[129].rt.bottom = 7828;
     blocks[129].lava_plag = FALSE;
     blocks[129].floor_plag = FALSE;
-    blocks[129].grass_plag = FALSE;
+    blocks[129].grass_plag = TRUE;
 
     blocks[130].rt.left = 3664;
     blocks[130].rt.top = 7795;
@@ -1049,7 +1049,7 @@ void init_blocks() {
     blocks[130].rt.bottom = 7828;
     blocks[130].lava_plag = FALSE;
     blocks[130].floor_plag = FALSE;
-    blocks[130].grass_plag = FALSE;
+    blocks[130].grass_plag = TRUE;
 
     blocks[131].rt.left = 197;
     blocks[131].rt.top = 7353;
@@ -1073,7 +1073,7 @@ void init_blocks() {
     blocks[133].rt.bottom = 7619;
     blocks[133].lava_plag = FALSE;
     blocks[133].floor_plag = FALSE;
-    blocks[133].grass_plag = FALSE;
+    blocks[133].grass_plag = TRUE;
 
     blocks[134].rt.left = 298;
     blocks[134].rt.top = 7587;
@@ -1081,7 +1081,7 @@ void init_blocks() {
     blocks[134].rt.bottom = 7621;
     blocks[134].lava_plag = FALSE;
     blocks[134].floor_plag = FALSE;
-    blocks[134].grass_plag = FALSE;
+    blocks[134].grass_plag = TRUE;
 
     blocks[135].rt.left = 470;
     blocks[135].rt.top = 7476;
@@ -1089,7 +1089,7 @@ void init_blocks() {
     blocks[135].rt.bottom = 7621;
     blocks[135].lava_plag = FALSE;
     blocks[135].floor_plag = FALSE;
-    blocks[135].grass_plag = FALSE;
+    blocks[135].grass_plag = TRUE;
 
     blocks[136].rt.left = 3628;
     blocks[136].rt.top = 7185;
@@ -1097,7 +1097,7 @@ void init_blocks() {
     blocks[136].rt.bottom = 7828;
     blocks[136].lava_plag = FALSE;
     blocks[136].floor_plag = FALSE;
-    blocks[136].grass_plag = FALSE;
+    blocks[136].grass_plag = TRUE;
 
     blocks[137].rt.left = 2595;
     blocks[137].rt.top = 7186;
@@ -1105,7 +1105,7 @@ void init_blocks() {
     blocks[137].rt.bottom = 7220;
     blocks[137].lava_plag = FALSE;
     blocks[137].floor_plag = FALSE;
-    blocks[137].grass_plag = FALSE;
+    blocks[137].grass_plag = TRUE;
 
     blocks[138].rt.left = 2559;
     blocks[138].rt.top = 7185;
@@ -1113,7 +1113,7 @@ void init_blocks() {
     blocks[138].rt.bottom = 7312;
     blocks[138].lava_plag = FALSE;
     blocks[138].floor_plag = FALSE;
-    blocks[138].grass_plag = FALSE;
+    blocks[138].grass_plag = TRUE;
 
     blocks[139].rt.left = 2229;
     blocks[139].rt.top = 7277;
@@ -1121,7 +1121,7 @@ void init_blocks() {
     blocks[139].rt.bottom = 7312;
     blocks[139].lava_plag = FALSE;
     blocks[139].floor_plag = FALSE;
-    blocks[139].grass_plag = FALSE;
+    blocks[139].grass_plag = TRUE;
 
     blocks[140].rt.left = 2195;
     blocks[140].rt.top = 7277;
@@ -1129,7 +1129,7 @@ void init_blocks() {
     blocks[140].rt.bottom = 7378;
     blocks[140].lava_plag = FALSE;
     blocks[140].floor_plag = FALSE;
-    blocks[140].grass_plag = FALSE;
+    blocks[140].grass_plag = TRUE;
 
     blocks[141].rt.left = 1901;
     blocks[141].rt.top = 7344;
@@ -1137,7 +1137,7 @@ void init_blocks() {
     blocks[141].rt.bottom = 7378;
     blocks[141].lava_plag = FALSE;
     blocks[141].floor_plag = FALSE;
-    blocks[141].grass_plag = FALSE;
+    blocks[141].grass_plag = TRUE;
 
     blocks[142].rt.left = 1137;
     blocks[142].rt.top = 7314;
@@ -1153,7 +1153,7 @@ void init_blocks() {
     blocks[143].rt.bottom = 7485;
     blocks[143].lava_plag = FALSE;
     blocks[143].floor_plag = FALSE;
-    blocks[143].grass_plag = FALSE;
+    blocks[143].grass_plag = TRUE;
 
     blocks[144].rt.left = 990;
     blocks[144].rt.top = 7452;
@@ -1161,7 +1161,7 @@ void init_blocks() {
     blocks[144].rt.bottom = 7484;
     blocks[144].lava_plag = FALSE;
     blocks[144].floor_plag = FALSE;
-    blocks[144].grass_plag = FALSE;
+    blocks[144].grass_plag = TRUE;
 
     blocks[145].rt.left = 954;
     blocks[145].rt.top = 7264;
@@ -1169,7 +1169,7 @@ void init_blocks() {
     blocks[145].rt.bottom = 7487;
     blocks[145].lava_plag = FALSE;
     blocks[145].floor_plag = FALSE;
-    blocks[145].grass_plag = FALSE;
+    blocks[145].grass_plag = TRUE;
 
     blocks[146].rt.left = 958;
     blocks[146].rt.top = 7076;
