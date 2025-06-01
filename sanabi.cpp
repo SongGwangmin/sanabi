@@ -379,14 +379,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	break;
 	case WM_LBUTTONDOWN:
 		wireon = 1;
-		SetTimer(hWnd, 1, 10, NULL);
 
 		mx = LOWORD(lParam);
 		my = HIWORD(lParam);
 
 		
 
-		radian = atan2(my - prelativex, mx - prelativey);
+		radian = atan2(my - prelativey, mx - prelativex);
 		//length = sqrt(((mx - player.x1) * (mx - player.x1)) + ((my - player.y1) * (my - player.y1)));
 		length = hypot(px - anchorx, py - anchory);
 		/*anchorx = mx;
@@ -405,6 +404,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		else {
 			direction = -1;
 		}
+		SetTimer(hWnd, 1, 100, NULL);
 
 
 		InvalidateRect(hWnd, NULL, 0);
