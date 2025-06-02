@@ -82,8 +82,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 	//window program winpro help hard
 	PAINTSTRUCT ps;
-	HDC hDC,mDC, mapDC, playerDC, cursorDC, bgDC, ptempDC;
-	static HBITMAP hBitmap, mapbitmap, playerbitmap, cursorbitmap, bgbitmap, ptempbitmap;
+	HDC hDC,mDC, mapDC, playerDC, cursorDC, bgDC, ptempDC, reverseDC;
+	static HBITMAP hBitmap, mapbitmap, playerbitmap, cursorbitmap, bgbitmap, ptempbitmap, reversebitmap;
 	static BITMAP bmp;
 	static TCHAR temp[100];
 	HPEN hPen, oldPen, whitepen;
@@ -153,7 +153,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		hBitmap = CreateCompatibleBitmap(hDC, rect.right, rect.bottom);
 		ptempDC = CreateCompatibleDC(mDC);
 		ptempbitmap = CreateCompatibleBitmap(hDC, rect.right, rect.bottom);
-		
+		reverseDC = CreateCompatibleDC(mDC);
+		reversebitmap = CreateCompatibleBitmap(hDC, rect.right, rect.bottom);
 		
 
 
@@ -163,11 +164,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		mapDC = CreateCompatibleDC(mDC);
 
 
-		HBITMAP oldBitmap, oldBgBitmap, oldPlayerBitmap, oldCursorBitmap, oldMapBitmap, oldptempBitmap;
+		HBITMAP oldBitmap, oldBgBitmap, oldPlayerBitmap, oldCursorBitmap, oldMapBitmap, oldptempBitmap, oldreverseBitmap;
 
 		// mDC에 hBitmap 선택
 		oldBitmap = (HBITMAP)SelectObject(mDC, hBitmap);
 		oldptempBitmap = (HBITMAP)SelectObject(ptempDC, ptempbitmap);
+		oldreverseBitmap = (HBITMAP)SelectObject(reverseDC, reversebitmap);
 		// 각 DC에 비트맵 선택
 		oldPlayerBitmap = (HBITMAP)SelectObject(playerDC, playerbitmap);
 		oldCursorBitmap = (HBITMAP)SelectObject(cursorDC, cursorbitmap);
@@ -225,6 +227,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		//TransparentBlt(mDC, px - carmerax - 40 + xmiddle, py - carmeray - 40 + ymiddle, 80, 80, playerDC, spritesxpos, spritesypos, 80, 80, RGB(255, 255, 255));
 		
+		FillRect(reverseDC, &rect, (HBRUSH)GetStockObject(WHITE_BRUSH));
+
+		if (pdirection == 1) {
+			StretchBlt(reverseDC, 0, 0, 80, 80, playerDC, spritesxpos, spritesypos, 80, 80, SRCCOPY);
+		}
+		else {
+			StretchBlt(reverseDC, 0, 0, 80, 80, playerDC, spritesxpos + 80, spritesypos, -80, 80, SRCCOPY);
+		}
 		if (wireon) {
 			mx = anchorx - carmerax + xmiddle;
 			my = anchory - carmeray + ymiddle;
@@ -251,12 +261,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			outPts[2].y = static_cast<LONG>(spritesypos + 40 + (-hw * sinA + hh * cosA));
 
 			//PlgBlt(mDC, outPts, tempDC, prelativex - 40, prelativey - 40, 80, 80, NULL, 0, 0);
-			PlgBlt(ptempDC, outPts, playerDC, spritesxpos, spritesypos, 80, 80, NULL, 0, 0);
+			//StretchBlt(reverseDC, 0, 0, 80, 80, playerDC, spritesxpos, spritesypos, 80, 80, SRCCOPY);
+
+			PlgBlt(ptempDC, outPts, reverseDC, 0, 0, 80, 80, NULL, 0, 0);
 			
 			TransparentBlt(mDC, prelativex - 40, prelativey - 40, 80, 80, ptempDC, spritesxpos, spritesypos, 80, 80, RGB(255, 255, 255));
 		}
 		else {
-			TransparentBlt(mDC, prelativex - 40, prelativey - 40, 80, 80, playerDC, spritesxpos, spritesypos, 80, 80, RGB(255, 255, 255));
+			TransparentBlt(mDC, prelativex - 40, prelativey - 40, 80, 80, reverseDC, 0, 0, 80, 80, RGB(255, 255, 255));
 		}
 
 		int anchorinblock = 0;
@@ -331,13 +343,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		SelectObject(cursorDC, oldCursorBitmap);
 		SelectObject(mapDC, oldMapBitmap);
 		SelectObject(bgDC, oldBgBitmap);
-		SelectObject(ptempDC, ptempbitmap);
+		SelectObject(ptempDC, oldptempBitmap);
+		SelectObject(reverseDC, oldreverseBitmap);
 
 		DeleteObject(hBitmap);
 		DeleteObject(ptempbitmap);
+		DeleteObject(reversebitmap);
 
 		DeleteDC(mDC);
 		DeleteDC(ptempDC);
+		DeleteDC(reverseDC);
 		DeleteDC(playerDC);
 		DeleteDC(cursorDC);
 		DeleteDC(mapDC);
@@ -370,10 +385,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		}
 
 		if (wParam == 'a') {
+			pdirection = -1;
 			px -= 10;
 		}
 
 		if (wParam == 'd') {
+			pdirection = 1;
 			px += 10;
 		}
 
