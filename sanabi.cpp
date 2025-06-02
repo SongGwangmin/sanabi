@@ -10,8 +10,9 @@
 #include "pch.cpp"
 #include "block.h"
 #pragma comment (lib, "msimg32.lib")
+#pragma comment(lib, "gdi32.lib")
 
-
+#define animationtimer 3
 
 HINSTANCE g_hInst;
 LPCTSTR lpszClass = L"Window Class Name";
@@ -81,8 +82,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 	//window program winpro help hard
 	PAINTSTRUCT ps;
-	HDC hDC,mDC, mapDC, playerDC, cursorDC, bgDC;
-	static HBITMAP hBitmap, mapbitmap, playerbitmap, cursorbitmap, bgbitmap;
+	HDC hDC,mDC, mapDC, playerDC, cursorDC, bgDC, ptempDC;
+	static HBITMAP hBitmap, mapbitmap, playerbitmap, cursorbitmap, bgbitmap, ptempbitmap;
 	static BITMAP bmp;
 	static TCHAR temp[100];
 	HPEN hPen, oldPen, whitepen;
@@ -105,6 +106,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	static int prelativey;
 	static int carmerax;
 	static int carmeray;
+
+	static int pdirection = 1;
+	static int anitimer = 0;
+	static int maxanistate = 8;
+	static int anistate = 0;
 
 	switch (iMessage) {
 	case WM_CREATE:
@@ -135,6 +141,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		player.rt.bottom = player.rt.top + 80;
 		player.rt.left = px - 40;
 		player.rt.right = player.rt.left + 80;
+
+		SetTimer(hWnd, animationtimer, 100, NULL);
 	}
 	break;
 	case WM_PAINT:
@@ -143,7 +151,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		hDC = BeginPaint(hWnd, &ps);
 		mDC = CreateCompatibleDC(hDC);
 		hBitmap = CreateCompatibleBitmap(hDC, rect.right, rect.bottom);
-
+		ptempDC = CreateCompatibleDC(mDC);
+		ptempbitmap = CreateCompatibleBitmap(hDC, rect.right, rect.bottom);
+		
 		
 
 
@@ -152,11 +162,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		bgDC = CreateCompatibleDC(mDC);
 		mapDC = CreateCompatibleDC(mDC);
 
-		HBITMAP oldBitmap, oldBgBitmap, oldPlayerBitmap, oldCursorBitmap, oldMapBitmap;
+
+		HBITMAP oldBitmap, oldBgBitmap, oldPlayerBitmap, oldCursorBitmap, oldMapBitmap, oldptempBitmap;
 
 		// mDC에 hBitmap 선택
 		oldBitmap = (HBITMAP)SelectObject(mDC, hBitmap);
-
+		oldptempBitmap = (HBITMAP)SelectObject(ptempDC, ptempbitmap);
 		// 각 DC에 비트맵 선택
 		oldPlayerBitmap = (HBITMAP)SelectObject(playerDC, playerbitmap);
 		oldCursorBitmap = (HBITMAP)SelectObject(cursorDC, cursorbitmap);
@@ -202,8 +213,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		TransparentBlt(mDC, map.left - carmerax + xmiddle, map.top - carmeray + ymiddle, bmp.bmWidth, bmp.bmHeight, mapDC, 0, 0, bmp.bmWidth, bmp.bmHeight, RGB(255, 255, 255));
 		
-		int spritesxpos = 0;
-		int spritesypos = 0;
+		int spritesxpos = anitimer * 80;
+		int spritesypos = anistate * 80;
 
 		
 		//spritesxpos = 0;
@@ -213,10 +224,39 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 
 		//TransparentBlt(mDC, px - carmerax - 40 + xmiddle, py - carmeray - 40 + ymiddle, 80, 80, playerDC, spritesxpos, spritesypos, 80, 80, RGB(255, 255, 255));
-		TransparentBlt(mDC, prelativex - 40, prelativey - 40, 80, 80, playerDC, spritesxpos, spritesypos, 80, 80, RGB(255, 255, 255));
+		
 		if (wireon) {
 			mx = anchorx - carmerax + xmiddle;
 			my = anchory - carmeray + ymiddle;
+
+			//TransparentBlt(tempDC, prelativex - 40, prelativey - 40, 80, 80, playerDC, spritesxpos, spritesypos, 80, 80, RGB(255, 255, 255));
+			
+			FillRect(ptempDC, &rect, (HBRUSH)GetStockObject(WHITE_BRUSH));
+			POINT outPts[3];
+			double cosA = cos(radian + 1.57);
+			double sinA = sin(radian + 1.57);
+			int hw = 40;
+			int hh = 40;
+
+
+			outPts[0].x = static_cast<LONG>(spritesxpos + 40 + (-hw * cosA - (-hh) * sinA));
+			outPts[0].y = static_cast<LONG>(spritesypos + 40 + (-hw * sinA + (-hh) * cosA));
+
+			// 오른쪽 위
+			outPts[1].x = static_cast<LONG>(spritesxpos + 40 + (hw * cosA - (-hh) * sinA));
+			outPts[1].y = static_cast<LONG>(spritesypos + 40 + (hw * sinA + (-hh) * cosA));
+
+			// 왼쪽 아래
+			outPts[2].x = static_cast<LONG>(spritesxpos + 40 + (-hw * cosA - hh * sinA));
+			outPts[2].y = static_cast<LONG>(spritesypos + 40 + (-hw * sinA + hh * cosA));
+
+			//PlgBlt(mDC, outPts, tempDC, prelativex - 40, prelativey - 40, 80, 80, NULL, 0, 0);
+			PlgBlt(ptempDC, outPts, playerDC, spritesxpos, spritesypos, 80, 80, NULL, 0, 0);
+			
+			TransparentBlt(mDC, prelativex - 40, prelativey - 40, 80, 80, ptempDC, spritesxpos, spritesypos, 80, 80, RGB(255, 255, 255));
+		}
+		else {
+			TransparentBlt(mDC, prelativex - 40, prelativey - 40, 80, 80, playerDC, spritesxpos, spritesypos, 80, 80, RGB(255, 255, 255));
 		}
 
 		int anchorinblock = 0;
@@ -257,10 +297,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		my = anchory - carmeray + ymiddle;
 
 		if (anchorinblock) {
-			TransparentBlt(mDC, mx - 64, my - 64, 128, 128, cursorDC, spritesxpos, spritesypos, 128, 128, RGB(255, 255, 255));
+			TransparentBlt(mDC, mx - 64, my - 64, 128, 128, cursorDC, 0, 0, 128, 128, RGB(255, 255, 255));
 		}
 		else {
-			TransparentBlt(mDC, mx - 32, my - 32, 64, 64, cursorDC, 128, spritesypos, 128, 128, RGB(255, 255, 255));
+			TransparentBlt(mDC, mx - 32, my - 32, 64, 64, cursorDC, 128, 0, 128, 128, RGB(255, 255, 255));
 		}
 		
 		
@@ -271,6 +311,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		MoveToEx(hDC, prelativex, prelativey, NULL);
 		LineTo(hDC, mx, my);
 
+		MoveToEx(hDC, prelativex, prelativey, NULL);
+		LineTo(hDC, prelativex, prelativey + 25);
+
 		wsprintf(temp, L"x = %d y = %d", anchorx, anchory);
 		TextOut(hDC, xmiddle, ymiddle, temp, lstrlen(temp));
 
@@ -279,16 +322,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		SelectObject(mDC, oldBrush);
 		DeleteObject(hBrush);
 
+		//plg하기위한 임시 dc
 		
+		//
+
 		SelectObject(mDC, oldBitmap);
 		SelectObject(playerDC, oldPlayerBitmap);
 		SelectObject(cursorDC, oldCursorBitmap);
 		SelectObject(mapDC, oldMapBitmap);
 		SelectObject(bgDC, oldBgBitmap);
+		SelectObject(ptempDC, ptempbitmap);
 
 		DeleteObject(hBitmap);
+		DeleteObject(ptempbitmap);
 
 		DeleteDC(mDC);
+		DeleteDC(ptempDC);
 		DeleteDC(playerDC);
 		DeleteDC(cursorDC);
 		DeleteDC(mapDC);
@@ -373,6 +422,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			player.x1 = mx - cos(radian) * length;
 			player.y1 = my - sin(radian) * length;
 			break;
+		case animationtimer:
+			anitimer++;
+			anitimer %= maxanistate;
+
+			break;
 		}
 	}
 	InvalidateRect(hWnd, NULL, 0);
@@ -397,6 +451,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		anchorx += carmerax;
 		anchory += carmeray;*/
 
+		anistate = 2;
+		anitimer = 0;
+		maxanistate = 6;
+
 		if (anchorx > px) {
 			direction = 1; // 반시계
 
@@ -404,7 +462,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		else {
 			direction = -1;
 		}
-		SetTimer(hWnd, 1, 100, NULL);
+		
+
+		SetTimer(hWnd, 1, 20, NULL);
 
 
 		InvalidateRect(hWnd, NULL, 0);
@@ -431,7 +491,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_LBUTTONUP:
 		wireon = 0;
+
+		anistate = 0;
+		anitimer = 0;
+		maxanistate = 8;
 		KillTimer(hWnd, 1);
+
 		InvalidateRect(hWnd, NULL, 0);
 		break;
 	case WM_LBUTTONDBLCLK:
@@ -453,3 +518,5 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 	return (DefWindowProc(hWnd, iMessage, wParam, lParam));
 }
+
+
