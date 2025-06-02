@@ -325,6 +325,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		MoveToEx(hDC, prelativex, prelativey, NULL);
 		LineTo(hDC, prelativex, prelativey + 25);
+		LineTo(hDC, prelativex + 15, prelativey + 15);
+		LineTo(hDC, prelativex - 15, prelativey + 15);
 
 		wsprintf(temp, L"x = %d y = %d", anchorx, anchory);
 		TextOut(hDC, xmiddle, ymiddle, temp, lstrlen(temp));
@@ -383,34 +385,55 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		if (wParam == 's') {
 			py += 10;
 		}
-
+		
 		if (wParam == 'a') {
 			pdirection = -1;
 			px -= 10;
+
+			if (anistate == 0) {
+				anistate = 1;
+				anitimer = 0;
+				maxanistate = 10;
+			}
 		}
 
 		if (wParam == 'd') {
 			pdirection = 1;
 			px += 10;
+
+			if (anistate == 0) {
+				anistate = 1;
+				anitimer = 0;
+				maxanistate = 10;
+			}
 		}
 
 		InvalidateRect(hWnd, NULL, 0);
 		ReleaseDC(hWnd, hDC);
 		break;
 
-	case WM_KEYDOWN:
+	case WM_KEYUP:
 	{
+		if (wParam == 'D') {
+			
+			anistate = 0;
+			anitimer = 0;
+			maxanistate = 8;
+		}
+		if (wParam == 'A') {
 
+			anistate = 0;
+			anitimer = 0;
+			maxanistate = 8;
+		}
 
 	}
 	InvalidateRect(hWnd, NULL, 0);
 	break;
 
-	case WM_KEYUP:
-		hDC = GetDC(hWnd);
+	case WM_KEYDOWN:
 		
-		//InvalidateRect(hWnd, NULL, 0);
-		ReleaseDC(hWnd, hDC);
+		InvalidateRect(hWnd, NULL, 0);
 		break;
 	case WM_COMMAND:
 	{
@@ -474,10 +497,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		if (anchorx > px) {
 			direction = 1; // 반시계
-
+			pdirection = 1;
 		}
 		else {
 			direction = -1;
+			pdirection = -1;
 		}
 		
 

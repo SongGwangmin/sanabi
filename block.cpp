@@ -169,7 +169,7 @@ void init_blocks() {
     blocks[20].rt.bottom = 6999;
     blocks[20].lava_plag = FALSE;
     blocks[20].floor_plag = FALSE;
-    blocks[20].grass_plag = FALSE;
+    blocks[20].grass_plag = TRUE;
 
     blocks[21].rt.left = 4128;
     blocks[21].rt.top = 6720;
@@ -901,7 +901,7 @@ void init_blocks() {
 
     blocks[112].rt.left = 5223;
     blocks[112].rt.top = 5626;
-    blocks[112].rt.right = 5620;
+    blocks[112].rt.right = 5260;
     blocks[112].rt.bottom = 5913;
     blocks[112].lava_plag = FALSE;
     blocks[112].floor_plag = FALSE;
