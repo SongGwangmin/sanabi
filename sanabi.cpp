@@ -13,6 +13,7 @@
 #pragma comment(lib, "gdi32.lib")
 
 #define animationtimer 3
+#define gravitytimer 4
 
 HINSTANCE g_hInst;
 LPCTSTR lpszClass = L"Window Class Name";
@@ -101,11 +102,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	static int direction;
 	static double radian;
 	static double length;
+	static int directiontemp;
 
 	static int prelativex;
 	static int prelativey;
 	static int carmerax;
 	static int carmeray;
+	static int anchorinblock;
 
 	static int pdirection = 1;
 	static int anitimer = 0;
@@ -143,6 +146,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		player.rt.right = player.rt.left + 80;
 
 		SetTimer(hWnd, animationtimer, 100, NULL);
+		SetTimer(hWnd, gravitytimer, 27, NULL);
 	}
 	break;
 	case WM_PAINT:
@@ -271,7 +275,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			TransparentBlt(mDC, prelativex - 40, prelativey - 40, 80, 80, reverseDC, 0, 0, 80, 80, RGB(255, 255, 255));
 		}
 
-		int anchorinblock = 0;
+		anchorinblock = 0;
 
 		if (!wireon) {
 			POINT anchorp = { anchorx, anchory };
@@ -456,57 +460,58 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			py = anchory - sin(radian) * length;
 			break;
 		case 2:
-			if (length > 0) {
-				length -= 20;
+			if (length > 15) {
+				length -= 10;
 			}
-			player.x1 = mx - cos(radian) * length;
-			player.y1 = my - sin(radian) * length;
+			px = anchorx - cos(radian) * length;
+			py = anchory - sin(radian) * length;
 			break;
 		case animationtimer:
 			anitimer++;
 			anitimer %= maxanistate;
 
 			break;
+
 		}
 	}
 	InvalidateRect(hWnd, NULL, 0);
 	break;
 	case WM_LBUTTONDOWN:
-		wireon = 1;
 
 		mx = LOWORD(lParam);
 		my = HIWORD(lParam);
 
 		
+		if (anchorinblock) {
+			wireon = 1;
+			radian = atan2(my - prelativey, mx - prelativex);
+			//length = sqrt(((mx - player.x1) * (mx - player.x1)) + ((my - player.y1) * (my - player.y1)));
+			length = hypot(px - anchorx, py - anchory);
+			/*anchorx = mx;
+			anchory = my;
 
-		radian = atan2(my - prelativey, mx - prelativex);
-		//length = sqrt(((mx - player.x1) * (mx - player.x1)) + ((my - player.y1) * (my - player.y1)));
-		length = hypot(px - anchorx, py - anchory);
-		/*anchorx = mx;
-		anchory = my;
+
+			anchorx -= xmiddle;
+			anchory -= ymiddle;
+			anchorx += carmerax;
+			anchory += carmeray;*/
+
+			anistate = 2;
+			anitimer = 0;
+			maxanistate = 6;
+
+			if (anchorx > px) {
+				direction = 1; // 반시계
+				pdirection = 1;
+			}
+			else {
+				direction = -1;
+				pdirection = -1;
+			}
 
 
-		anchorx -= xmiddle;
-		anchory -= ymiddle;
-		anchorx += carmerax;
-		anchory += carmeray;*/
-
-		anistate = 2;
-		anitimer = 0;
-		maxanistate = 6;
-
-		if (anchorx > px) {
-			direction = 1; // 반시계
-			pdirection = 1;
+			SetTimer(hWnd, 1, 25, NULL);
 		}
-		else {
-			direction = -1;
-			pdirection = -1;
-		}
-		
-
-		SetTimer(hWnd, 1, 20, NULL);
-
 
 		InvalidateRect(hWnd, NULL, 0);
 		break;
@@ -540,6 +545,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		InvalidateRect(hWnd, NULL, 0);
 		break;
+	case WM_RBUTTONDOWN:
+	{
+		if (wireon) {
+			directiontemp = direction;
+			direction = 0;
+
+			SetTimer(hWnd, 2, 1, NULL);
+		}
+	}
+	break;
+	case WM_RBUTTONUP:
+	{
+		if (wireon) {
+			direction = directiontemp;
+			//direction = 0;
+
+			KillTimer(hWnd, 2);
+		}
+	}
+	break;
 	case WM_LBUTTONDBLCLK:
 		InvalidateRect(hWnd, NULL, 0);
 		break;
