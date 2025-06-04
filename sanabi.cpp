@@ -214,6 +214,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			carmeray -= carmeray + ymiddle - bmp.bmHeight;
 		}
 
+
 		/*anchorx = mx;
 		anchory = my;
 
@@ -504,6 +505,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	{
 		switch (wParam) {
 		case 1:
+		{
 			if (direction == 1) {
 				radian -= 0.1;
 			}
@@ -511,10 +513,69 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 				radian += 0.1;
 			}
 
-			px = anchorx - cos(radian) * length;
+			int iscolide = 0;
+
+			int grasscolide = 0;
+			int headcolide = 0;
+			RECT coliderect;
+
+			for (int i = 0; i < 147; ++i) {
+				if (IntersectRect(&coliderect, &hitbox, &blocks[i].rt)) {
+					if (coliderect.right - coliderect.left > 10 && coliderect.bottom == hitbox.bottom) {
+
+						grasscolide = 1;
+					}
+					if (coliderect.right - coliderect.left > 10 && coliderect.top == hitbox.top) {
+
+						headcolide = 1;
+					}
+
+					iscolide = 1;
+				}
+			}
+
+			/*if (!grasscolide && iscolide) {
+				if (direction == 1) {
+					radian += 0.1;
+				}
+				else if (direction == -1) {
+					radian -= 0.1;
+				}
+				py = anchory - sin(radian) * length;
+				px = anchorx - cos(radian) * length;
+			}
+			else if (grasscolide && iscolide) {
+				px = anchorx - cos(radian) * length;
+				
+			}
+			else {
+				py = anchory - sin(radian) * length;
+				px = anchorx - cos(radian) * length;
+			}*/
+			if (iscolide) {
+				if (direction == 1) {
+					radian += 0.1;
+				}
+				else if (direction == -1) {
+					radian -= 0.1;
+				}
+			}
 			py = anchory - sin(radian) * length;
+			px = anchorx - cos(radian) * length;
+
+			if (headcolide) {
+				wireon = 0;
+
+				anistate = 0;
+				anitimer = 0;
+				maxanistate = 8;
+				KillTimer(hWnd, 1);
+			}
+			
+		}
 			break;
 		case 2:
+
 			if (length > 15) {
 				length -= 10;
 			}
@@ -606,7 +667,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		my = HIWORD(lParam);
 
 		
-		if (anchorinblock) {
+		if (anchorinblock && !wireon) {
 			wireon = 1;
 			radian = atan2(my - prelativey, mx - prelativex);
 			//length = sqrt(((mx - player.x1) * (mx - player.x1)) + ((my - player.y1) * (my - player.y1)));
@@ -681,11 +742,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	break;
 	case WM_RBUTTONUP:
 	{
-		if (wireon) {
 			direction = directiontemp;
+			KillTimer(hWnd, 2);
+		if (wireon) {
 			//direction = 0;
 
-			KillTimer(hWnd, 2);
 		}
 	}
 	break;
