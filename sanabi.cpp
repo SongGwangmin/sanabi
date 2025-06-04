@@ -104,6 +104,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	static double length;
 	static int directiontemp;
 
+	static RECT hitbox;
+	static int inair;
+	static int jumpend;
+	static int jumptimer = 30;
+
 	static int prelativex;
 	static int prelativey;
 	static int carmerax;
@@ -114,6 +119,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	static int anitimer = 0;
 	static int maxanistate = 8;
 	static int anistate = 0;
+	
 
 	switch (iMessage) {
 	case WM_CREATE:
@@ -392,7 +398,30 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		
 		if (wParam == 'a') {
 			pdirection = -1;
-			px -= 10;
+
+			int iscolide = 0;
+
+			int grasscolide = 0;
+			RECT coliderect[2];
+
+
+			int g = 0;
+
+			for (int i = 0; i < 147; ++i) {
+				if (IntersectRect(&coliderect[g], &hitbox, &blocks[i].rt)) {
+
+					if (coliderect[g].bottom - coliderect[g].top > 10 && coliderect[g].left == hitbox.left) {
+						iscolide = 1;
+						++g;
+					}
+
+
+				}
+			}
+			if (!iscolide) {
+				px -= 10;
+			}
+
 
 			if (anistate == 0) {
 				anistate = 1;
@@ -403,7 +432,29 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		if (wParam == 'd') {
 			pdirection = 1;
-			px += 10;
+
+			int iscolide = 0;
+
+			int grasscolide = 0;
+			RECT coliderect[2];
+			
+
+			int g = 0;
+
+			for (int i = 0; i < 147; ++i) {
+				if (IntersectRect(&coliderect[g], &hitbox, &blocks[i].rt)) {
+
+					if (coliderect[g].bottom - coliderect[g].top > 10 && coliderect[g].right == hitbox.right) {
+						iscolide = 1;
+						++g;
+					}
+
+
+				}
+			}
+			if (!iscolide) {
+				px += 10;
+			}
 
 			if (anistate == 0) {
 				anistate = 1;
@@ -436,7 +487,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	break;
 
 	case WM_KEYDOWN:
-		
+		if (wParam == VK_SPACE) {
+			if (inair == 0) {
+				jumptimer = 0;
+			}
+		}
 		InvalidateRect(hWnd, NULL, 0);
 		break;
 	case WM_COMMAND:
@@ -471,7 +526,76 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			anitimer %= maxanistate;
 
 			break;
+		case gravitytimer:
+		{
+			
 
+			hitbox.left = px - 30;
+			hitbox.right = px + 30;
+			hitbox.top = py - 28;
+			hitbox.bottom = py + 25;
+
+			int iscolide = 0;
+
+			int grasscolide = 0;
+			RECT coliderect;
+			
+			for (int i = 0; i < 147; ++i) {
+				if (IntersectRect(&coliderect, &hitbox, &blocks[i].rt)) {
+					
+					if (coliderect.right - coliderect.left > 10 && coliderect.bottom == hitbox.bottom) {
+
+						grasscolide = 1;
+					}
+					
+					if (coliderect.right - coliderect.left > 10 && coliderect.top == hitbox.top) {
+						jumptimer = 30;
+					}
+				}
+			}
+			jumpend = 0;
+			if (jumptimer < 25) {
+				py -= 15;
+				jumptimer++;
+				jumpend = 1;
+			}
+
+			if (!grasscolide) {
+				
+				py += 5;
+				inair = 1;
+
+				if (jumpend) {
+					if (!wireon) {
+						if (anistate != 2) {
+							anistate = 2;
+							anitimer = 0;
+							maxanistate = 6;
+						}
+					}
+				}
+				else {
+					if (!wireon) {
+						if (anistate != 3) {
+							anistate = 3;
+							anitimer = 0;
+							maxanistate = 3;
+						}
+					}
+				}
+			}
+			else {
+				inair = 0;
+				if (!wireon) {
+					if (anistate >= 2) {
+						anistate = 0;
+						anitimer = 0;
+						maxanistate = 8;
+					}
+				}
+			}
+		}
+			break;
 		}
 	}
 	InvalidateRect(hWnd, NULL, 0);
