@@ -120,6 +120,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	static int maxanistate = 8;
 	static int anistate = 0;
 	
+	//stage plags
+	static int resetx;
+	static int tresety;
+	static int camera_plag = 0;
 
 	switch (iMessage) {
 	case WM_CREATE:
@@ -207,13 +211,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		carmerax = px;
 		carmeray = py;
 
-		if (carmerax < xmiddle) {
-			carmerax = xmiddle;
+		if (camera_plag == 0) {
+			if (carmerax < xmiddle) {
+				carmerax = xmiddle;
+			}
+			if (carmeray + ymiddle > bmp.bmHeight) { // 보스맵 바닥 y좌표 1331
+				carmeray -= carmeray + ymiddle - bmp.bmHeight;
+			}
 		}
-		if (carmeray + ymiddle > bmp.bmHeight) { // 보스맵 바닥 y좌표 1331
-			carmeray -= carmeray + ymiddle - bmp.bmHeight;
+		else if (camera_plag == 1) {
+			if (carmerax + xmiddle > bmp.bmWidth) { // 보스맵 바닥 y좌표 1331
+				carmerax -= carmerax + xmiddle - bmp.bmWidth;
+			}
 		}
-
+		else {
+			if (carmerax < xmiddle) {
+				carmerax = xmiddle;
+			}
+			if (carmerax + xmiddle > 2023) { // 보스맵 바닥 y좌표 1331
+				carmerax -= carmerax + xmiddle - 2023;
+			}
+			if (carmeray < ymiddle) {
+				carmeray = ymiddle;
+			}
+			if (carmeray + ymiddle > 1331) { // 보스맵 바닥 y좌표 1331
+				carmeray -= carmeray + ymiddle - 1331;
+			}
+		}
+		
 
 		/*anchorx = mx;
 		anchory = my;
@@ -293,7 +318,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 				anchorp.y = py + sin(imradian) * wirelength;
 
 				int chk = 0;
-				for (int i = 0; i < 147; ++i) {
+				for (int i = 0; i < 149; ++i) {
 					if (PtInRect(&blocks[i].rt, anchorp)) {
 						if (blocks[i].grass_plag == TRUE) {
 							anchorinblock = 1;
@@ -390,7 +415,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		}
 
 		if (wParam == 'w') {
-			py -= 10;
+			int iscolide = 0;
+
+			int grasscolide = 0;
+			int headcolide = 0;
+			RECT coliderect;
+
+			for (int i = 0; i < 149; ++i) {
+				if (IntersectRect(&coliderect, &hitbox, &blocks[i].rt)) {
+					
+
+					iscolide = 1;
+				}
+			}
+
+			if (iscolide) {
+				py -= 10;
+			}
 		}
 
 		if (wParam == 's') {
@@ -400,67 +441,125 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		if (wParam == 'a') {
 			pdirection = -1;
 
-			int iscolide = 0;
+			if (!wireon) {
+				int iscolide = 0;
 
-			int grasscolide = 0;
-			RECT coliderect[2];
+				int grasscolide = 0;
+				RECT coliderect;
 
 
-			int g = 0;
+				int g = 0;
 
-			for (int i = 0; i < 147; ++i) {
-				if (IntersectRect(&coliderect[g], &hitbox, &blocks[i].rt)) {
+				for (int i = 0; i < 149; ++i) {
+					if (IntersectRect(&coliderect, &hitbox, &blocks[i].rt)) {
 
-					if (coliderect[g].bottom - coliderect[g].top > 10 && coliderect[g].left == hitbox.left) {
-						iscolide = 1;
-						++g;
+						if (coliderect.bottom - coliderect.top > 10 && coliderect.left == hitbox.left) {
+							iscolide = 1;
+							++g;
+						}
+
+
 					}
+				}
+				if (!iscolide) {
+					px -= 10;
+				}
 
 
+				if (anistate == 0) {
+					anistate = 1;
+					anitimer = 0;
+					maxanistate = 10;
 				}
 			}
-			if (!iscolide) {
-				px -= 10;
-			}
+			else {
+				int iscolide = 0;
+				direction = -1;
+				int grasscolide = 0;
+				int headcolide = 0;
+				RECT coliderect;
+				RECT temphitbox;
+				/*
+				for (int i = 0; i < 147; ++i) {
+					if (IntersectRect(&coliderect, &hitbox, &blocks[i].rt)) {
+						if (coliderect.right - coliderect.left > 10 && coliderect.bottom == hitbox.bottom) {
 
+							grasscolide = 1;
+						}
+						if (coliderect.right - coliderect.left > 10 && coliderect.top == hitbox.top) {
 
-			if (anistate == 0) {
-				anistate = 1;
-				anitimer = 0;
-				maxanistate = 10;
+							headcolide = 1;
+						}
+
+						iscolide = 1;
+					}
+				}*/
+
+				py = anchory - sin(radian - 0.1) * length;
+				px = anchorx - cos(radian - 0.1) * length;
+
 			}
 		}
 
 		if (wParam == 'd') {
 			pdirection = 1;
 
-			int iscolide = 0;
+			if (!wireon) {
+				int iscolide = 0;
 
-			int grasscolide = 0;
-			RECT coliderect[2];
-			
+				int grasscolide = 0;
+				RECT coliderect[2];
 
-			int g = 0;
 
-			for (int i = 0; i < 147; ++i) {
-				if (IntersectRect(&coliderect[g], &hitbox, &blocks[i].rt)) {
+				int g = 0;
 
-					if (coliderect[g].bottom - coliderect[g].top > 10 && coliderect[g].right == hitbox.right) {
-						iscolide = 1;
-						++g;
+				for (int i = 0; i < 149; ++i) {
+					if (IntersectRect(&coliderect[g], &hitbox, &blocks[i].rt)) {
+
+						if (coliderect[g].bottom - coliderect[g].top > 10 && coliderect[g].right == hitbox.right) {
+							iscolide = 1;
+							++g;
+						}
+
+
 					}
+				}
+				if (!iscolide) {
+					px += 10;
+				}
 
-
+				if (anistate == 0) {
+					anistate = 1;
+					anitimer = 0;
+					maxanistate = 10;
 				}
 			}
-			if (!iscolide) {
-				px += 10;
-			}
+			else {
+				int iscolide = 0;
+				direction = 1;
+				int grasscolide = 0;
+				int headcolide = 0;
+				RECT coliderect;
+				RECT temphitbox;
+				/*
+				for (int i = 0; i < 147; ++i) {
+					if (IntersectRect(&coliderect, &hitbox, &blocks[i].rt)) {
+						if (coliderect.right - coliderect.left > 10 && coliderect.bottom == hitbox.bottom) {
 
-			if (anistate == 0) {
-				anistate = 1;
-				anitimer = 0;
-				maxanistate = 10;
+							grasscolide = 1;
+						}
+						if (coliderect.right - coliderect.left > 10 && coliderect.top == hitbox.top) {
+
+							headcolide = 1;
+						}
+
+						iscolide = 1;
+					}
+				}*/
+
+				py = anchory - sin(radian + 0.1) * length;
+				px = anchorx - cos(radian + 0.1) * length;
+
 			}
 		}
 
@@ -472,15 +571,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	{
 		if (wParam == 'D') {
 			
-			anistate = 0;
-			anitimer = 0;
-			maxanistate = 8;
+			if (!wireon) {
+				anistate = 0;
+				anitimer = 0;
+				maxanistate = 8;
+			}
 		}
 		if (wParam == 'A') {
 
-			anistate = 0;
-			anitimer = 0;
-			maxanistate = 8;
+			if (!wireon) {
+				anistate = 0;
+				anitimer = 0;
+				maxanistate = 8;
+			}
 		}
 
 	}
@@ -519,7 +622,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			int headcolide = 0;
 			RECT coliderect;
 
-			for (int i = 0; i < 147; ++i) {
+			for (int i = 0; i < 149; ++i) {
 				if (IntersectRect(&coliderect, &hitbox, &blocks[i].rt)) {
 					if (coliderect.right - coliderect.left > 10 && coliderect.bottom == hitbox.bottom) {
 
@@ -601,7 +704,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			int grasscolide = 0;
 			RECT coliderect;
 			
-			for (int i = 0; i < 147; ++i) {
+			for (int i = 0; i < 149; ++i) {
 				if (IntersectRect(&coliderect, &hitbox, &blocks[i].rt)) {
 					
 					if (coliderect.right - coliderect.left > 10 && coliderect.bottom == hitbox.bottom) {

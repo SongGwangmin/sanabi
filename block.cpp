@@ -1,6 +1,6 @@
 #include "block.h"
 
-block blocks[147];
+block blocks[149];
 
 void init_blocks() {
     blocks[0].rt.left = 0;
@@ -8,7 +8,7 @@ void init_blocks() {
     blocks[0].rt.right = 182;
     blocks[0].rt.bottom = 7874;
     blocks[0].lava_plag = FALSE;
-    blocks[0].floor_plag = FALSE;
+    blocks[0].floor_plag = TRUE;
     blocks[0].grass_plag = TRUE;
 
     blocks[1].rt.left = 176;
@@ -16,7 +16,7 @@ void init_blocks() {
     blocks[1].rt.right = 707;
     blocks[1].rt.bottom = 7905;
     blocks[1].lava_plag = FALSE;
-    blocks[1].floor_plag = FALSE;
+    blocks[1].floor_plag = TRUE;
     blocks[1].grass_plag = TRUE;
 
     blocks[2].rt.left = 710;
@@ -24,7 +24,7 @@ void init_blocks() {
     blocks[2].rt.right = 721;
     blocks[2].rt.bottom = 7905;
     blocks[2].lava_plag = FALSE;
-    blocks[2].floor_plag = FALSE;
+    blocks[2].floor_plag = TRUE;
     blocks[2].grass_plag = TRUE;
 
     blocks[3].rt.left = 722;
@@ -1178,6 +1178,25 @@ void init_blocks() {
     blocks[146].lava_plag = FALSE;
     blocks[146].floor_plag = FALSE;
     blocks[146].grass_plag = FALSE;
+
+    //º¸½º¸Ê º®
+    //left
+    blocks[147].rt.left = -20;
+    blocks[147].rt.top = 0;
+    blocks[147].rt.right = 0;
+    blocks[147].rt.bottom = 1236;
+    blocks[147].lava_plag = FALSE;
+    blocks[147].floor_plag = FALSE;
+    blocks[147].grass_plag = FALSE;
+
+    blocks[148].rt.left = 2023;
+    blocks[148].rt.top = 0;
+    blocks[148].rt.right = 2043;
+    blocks[148].rt.bottom = 1236;
+    blocks[148].lava_plag = FALSE;
+    blocks[148].floor_plag = FALSE;
+    blocks[148].grass_plag = FALSE;
+
 
     for (int i = 0; i < 147; ++i) {
         if (blocks[i].rt.left > blocks[i].rt.right) {

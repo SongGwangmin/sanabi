@@ -11,6 +11,6 @@ typedef struct Block {
 
 
 
-extern block blocks[147];
+extern block blocks[149];
 
 void init_blocks();
