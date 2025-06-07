@@ -15,6 +15,11 @@
 #define animationtimer 3
 #define gravitytimer 4
 
+#define bossstart 10
+#define lockon 11
+#define ready 12
+#define fire 13
+
 HINSTANCE g_hInst;
 LPCTSTR lpszClass = L"Window Class Name";
 LPCTSTR lpszWindowName = L"windows program 1";
@@ -83,8 +88,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 	//window program winpro help hard
 	PAINTSTRUCT ps;
-	HDC hDC,mDC, mapDC, playerDC, cursorDC, bgDC, ptempDC, reverseDC;
-	static HBITMAP hBitmap, mapbitmap, playerbitmap, cursorbitmap, bgbitmap, ptempbitmap, reversebitmap;
+	HDC hDC,mDC, mapDC, playerDC, cursorDC, bgDC, ptempDC, reverseDC, bossDC;
+	static HBITMAP hBitmap, mapbitmap, playerbitmap, cursorbitmap, bgbitmap, ptempbitmap, reversebitmap, bossbitmap;
 	static BITMAP bmp;
 	static TCHAR temp[100];
 	HPEN hPen, oldPen, whitepen;
@@ -125,6 +130,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	static int resety;
 	static int camera_plag = 0;
 
+	//boss
+	static RECT boss;
+	static int bossx;
+	static int bossy;
+	static POINT bosspos[7];
+	static int razoron;
+	static double razor_radian;
+	static int lockdowntimer;
+	static int relativebossx;
+	static int relativebossy;
+	static int bossanitimer;
+
 	switch (iMessage) {
 	case WM_CREATE:
 	{
@@ -136,6 +153,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		playerbitmap = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_BITMAP2));
 		cursorbitmap = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_BITMAP4));
 		bgbitmap = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_BITMAP5));
+		bossbitmap = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_BITMAP6));
 		xmiddle = rect.right / 2;
 		ymiddle = rect.bottom / 2;
 		GetObject(mapbitmap, sizeof(BITMAP), &bmp);
@@ -158,6 +176,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		player.rt.left = px - 40;
 		player.rt.right = player.rt.left + 80;
 
+		bosspos[0].x = 85;
+		bosspos[0].y = 481 - 30;
+		bosspos[1].x = 85;
+		bosspos[1].y = 836 - 30;
+		bosspos[2].x = 635;
+		bosspos[2].y = 832 - 30;
+
+		bosspos[3].x = 1932;
+		bosspos[3].y = 481 - 30;
+		bosspos[4].x = 1932;
+		bosspos[4].y = 836 - 30;
+		bosspos[5].x = 1376;
+		bosspos[5].y = 832 - 30;
+
+		bosspos[6].x = 1014;
+		bosspos[6].y = 390 - 30;
+
+		bossx = bosspos[5].x;
+		bossy = bosspos[5].y;
+
+		boss.left = bossx - 30;
+		boss.right = bossx + 30;
+		boss.top = bossy - 30;
+		boss.bottom = bossy + 30;
+
+		relativebossx = bossx - carmerax + xmiddle;
+		relativebossy = bossy - carmeray + ymiddle;
+
 		SetTimer(hWnd, animationtimer, 100, NULL);
 		SetTimer(hWnd, gravitytimer, 27, NULL);
 	}
@@ -179,9 +225,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		cursorDC = CreateCompatibleDC(mDC);
 		bgDC = CreateCompatibleDC(mDC);
 		mapDC = CreateCompatibleDC(mDC);
+		bossDC = CreateCompatibleDC(mDC);
 
 
-		HBITMAP oldBitmap, oldBgBitmap, oldPlayerBitmap, oldCursorBitmap, oldMapBitmap, oldptempBitmap, oldreverseBitmap;
+		HBITMAP oldBitmap, oldBgBitmap, oldPlayerBitmap, oldCursorBitmap, oldMapBitmap, oldptempBitmap, oldreverseBitmap, oldbossBitmap;
 
 		// mDC에 hBitmap 선택
 		oldBitmap = (HBITMAP)SelectObject(mDC, hBitmap);
@@ -192,6 +239,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		oldCursorBitmap = (HBITMAP)SelectObject(cursorDC, cursorbitmap);
 		oldMapBitmap = (HBITMAP)SelectObject(mapDC, mapbitmap);
 		oldBgBitmap = (HBITMAP)SelectObject(bgDC, bgbitmap);
+		oldbossBitmap = (HBITMAP)SelectObject(bossDC, bossbitmap);
 
 
 		hPen = CreatePen(PS_DOT, 1, RGB(0, 255, 255));
@@ -335,6 +383,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 						break;
 					}
 				}
+
+				if (PtInRect(&boss, anchorp)) {
+					anchorinblock = 2;
+					anchorx = bossx;
+					anchory = bossy;
+					chk = 1;
+				}
 				if (chk) {
 					break;
 				}
@@ -343,15 +398,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		/*anchorp.x = px;
 		anchorp.y = py;*/
 
-		
+		if (camera_plag == 2) {
+			relativebossx = bossx - carmerax + xmiddle;
+			relativebossy = bossy - carmeray + ymiddle;
+			if (px > bossx) { // boss have to gaze right
+				StretchBlt(reverseDC, 80, 0, 80, 80, bossDC, bossanitimer * 80, 0, 80, 80, SRCCOPY);
+			}
+			else {
+				StretchBlt(reverseDC, 80, 0, 80, 80, bossDC, bossanitimer * 80 + 80, 0, -80, 80, SRCCOPY);
+			}
+			TransparentBlt(mDC, relativebossx - 40, relativebossy - 40, 80, 80, reverseDC, 80, 0, 80, 80, RGB(255, 255, 255));
+		}
 
 		
 
 		mx = anchorx - carmerax + xmiddle;
 		my = anchory - carmeray + ymiddle;
 
-		if (anchorinblock) {
+		if (anchorinblock == 1) {
 			TransparentBlt(mDC, mx - 64, my - 64, 128, 128, cursorDC, 0, 0, 128, 128, RGB(255, 255, 255));
+		}
+		else if (anchorinblock == 2) {
+			TransparentBlt(mDC, mx - 64, my - 64, 128, 128, cursorDC, 128, 0, 128, 128, RGB(255, 255, 255));
 		}
 		else {
 			TransparentBlt(mDC, mx - 32, my - 32, 64, 64, cursorDC, 128, 0, 128, 128, RGB(255, 255, 255));
@@ -366,12 +434,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		LineTo(hDC, mx, my);
 
 		MoveToEx(hDC, prelativex, prelativey, NULL);
-		LineTo(hDC, prelativex, prelativey + 25);
+		LineTo(hDC, prelativex, prelativey - 15);
 		LineTo(hDC, prelativex + 15, prelativey + 15);
 		LineTo(hDC, prelativex - 15, prelativey + 15);
 
-		wsprintf(temp, L"x = %d y = %d", anchorx, anchory);
-		TextOut(hDC, xmiddle, ymiddle, temp, lstrlen(temp));
+		//wsprintf(temp, L"x = %d y = %d", anchorx, anchory);
+		//TextOut(hDC, xmiddle, ymiddle, temp, lstrlen(temp));
+
+		if (razoron) {
+			SelectObject(hDC, oldPen);
+			DeleteObject(hPen);
+
+			hPen = CreatePen(PS_DOT, 2, RGB(255, 0, 0));
+			oldPen = (HPEN)SelectObject(hDC, hPen);
+			MoveToEx(hDC, relativebossx, relativebossy, NULL);
+
+			int razordestx = relativebossx - cos(razor_radian) * 1500;
+			int razordesty = relativebossy - sin(razor_radian) * 1500;
+
+			LineTo(hDC, razordestx, razordesty);
+		}
 
 		SelectObject(hDC, oldPen);
 		DeleteObject(hPen);
@@ -389,6 +471,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		SelectObject(bgDC, oldBgBitmap);
 		SelectObject(ptempDC, oldptempBitmap);
 		SelectObject(reverseDC, oldreverseBitmap);
+		SelectObject(bossDC, oldbossBitmap);
 
 		DeleteObject(hBitmap);
 		DeleteObject(ptempbitmap);
@@ -401,6 +484,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		DeleteDC(cursorDC);
 		DeleteDC(mapDC);
 		DeleteDC(bgDC);
+		DeleteDC(bossDC);
 
 
 
@@ -409,6 +493,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 	}			 break;
 	case WM_CHAR:
+	{
 		hDC = GetDC(hWnd);
 
 		if (wParam == 'p') {
@@ -429,7 +514,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 			for (int i = 0; i < 149; ++i) {
 				if (IntersectRect(&coliderect, &hitbox, &blocks[i].rt)) {
-					
+
 
 					iscolide = 1;
 				}
@@ -443,7 +528,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		if (wParam == 's') {
 			py += 10;
 		}
-		
+
 		if (wParam == 'a') {
 			pdirection = -1;
 
@@ -571,6 +656,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		InvalidateRect(hWnd, NULL, 0);
 		ReleaseDC(hWnd, hDC);
+	}
 		break;
 
 	case WM_KEYUP:
@@ -694,6 +780,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		case animationtimer:
 			anitimer++;
 			anitimer %= maxanistate;
+			bossanitimer++;
+			bossanitimer %= 8;
 
 			break;
 		case gravitytimer:
@@ -795,12 +883,46 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 					wireon = 0;
 					KillTimer(hWnd, 1);
 					camera_plag = 2;
+					SetTimer(hWnd, bossstart, 1503, NULL);
 				}
 			}
 			if (py > 8000) {
 				px = resetx;
 				py = resety;
 			}
+		}
+			break;
+		case bossstart:
+		{
+			SetTimer(hWnd, lockon, 16, NULL);
+			razoron = 1;
+			lockdowntimer = 0;
+			KillTimer(hWnd, bossstart);
+		}
+			break;
+		case lockon:
+		{
+			lockdowntimer += 16;
+			razor_radian = atan2(bossy - py, bossx - px);
+			if (lockdowntimer > 5000) {
+				SetTimer(hWnd, ready, 1501, NULL);
+				KillTimer(hWnd, lockon);
+			}
+		}
+			break;
+		case ready:
+		{
+			razoron = 0;
+			lockdowntimer = 0;
+			SetTimer(hWnd, fire, 1501, NULL);
+			KillTimer(hWnd, ready);
+		}
+			break;
+		case fire: 
+		{
+			razoron = 1;
+			SetTimer(hWnd, lockon, 16, NULL);
+			KillTimer(hWnd, fire);
 		}
 			break;
 		}

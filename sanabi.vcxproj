@@ -162,6 +162,7 @@
     <Image Include="..\..\..\Desktop\강의\윈프\Sanabi\background.bmp" />
     <Image Include="..\..\..\desktop\강의\윈프\sanabi\bitmap3.bmp" />
     <Image Include="..\..\..\Desktop\강의\윈프\Sanabi\Cursor.bmp" />
+    <Image Include="..\..\..\Desktop\강의\윈프\Sanabi\enemy.bmp" />
     <Image Include="..\..\..\Desktop\강의\윈프\Sanabi\map.bmp" />
     <Image Include="..\..\..\Desktop\강의\윈프\Sanabi\playersprite.bmp" />
     <Image Include="sanabi.ico" />
