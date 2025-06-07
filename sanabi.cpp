@@ -122,7 +122,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	
 	//stage plags
 	static int resetx;
-	static int tresety;
+	static int resety;
 	static int camera_plag = 0;
 
 	switch (iMessage) {
@@ -149,6 +149,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		px = xmiddle;
 		py = map.bottom - ymiddle;
 		//py = ymiddle;
+
+		resetx = px;
+		resety = py;
 
 		player.rt.top = py - 40;
 		player.rt.bottom = player.rt.top + 80;
@@ -220,8 +223,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			}
 		}
 		else if (camera_plag == 1) {
-			if (carmerax + xmiddle > bmp.bmWidth) { // 보스맵 바닥 y좌표 1331
+			if (carmerax + xmiddle > bmp.bmWidth) {
 				carmerax -= carmerax + xmiddle - bmp.bmWidth;
+			}
+			if (carmerax < 7761 + xmiddle) {
+				carmerax = 7761 + xmiddle;
 			}
 		}
 		else {
@@ -406,8 +412,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		hDC = GetDC(hWnd);
 
 		if (wParam == 'p') {
-			int ki = anchorx;
-			int vv = anchory;
+			px = 10008;
+			py = 3102;
 		}
 
 		if (wParam == 'q') {
@@ -715,6 +721,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 					if (coliderect.right - coliderect.left > 10 && coliderect.top == hitbox.top) {
 						jumptimer = 30;
 					}
+
+					if (blocks[i].lava_plag == TRUE) {
+						px = resetx;
+						py = resety;
+						wireon = 0;
+						KillTimer(hWnd, 1);
+					}
 				}
 			}
 			jumpend = 0;
@@ -757,6 +770,36 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 						maxanistate = 8;
 					}
 				}
+			}
+
+
+			//주인공의 좌표에 따라 카메라와 resetxy갱신
+			if (camera_plag == 0) {
+				if (px > 6115) {
+					resetx = 5772;
+					resety = 5936;
+				}
+				if (px > 8000) {
+					resetx = 9000;
+					resety = 4900;
+					camera_plag = 1;
+				}
+
+			}
+			else if (camera_plag == 1) {
+				if (px < 7762 && py < 3270) {
+					resetx = xmiddle;
+					resety = ymiddle;
+					px = xmiddle;
+					py = ymiddle;
+					wireon = 0;
+					KillTimer(hWnd, 1);
+					camera_plag = 2;
+				}
+			}
+			if (py > 8000) {
+				px = resetx;
+				py = resety;
 			}
 		}
 			break;
