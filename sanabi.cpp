@@ -20,6 +20,8 @@
 #define ready 12
 #define fire 13
 
+#define shake 20
+
 HINSTANCE g_hInst;
 LPCTSTR lpszClass = L"Window Class Name";
 LPCTSTR lpszWindowName = L"windows program 1";
@@ -146,9 +148,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	static int launchertimer;
 	static int launcherdirection;
 
+	//shake
+	static int shaketimer;
+	static int shakex;
+
 	switch (iMessage) {
 	case WM_CREATE:
 	{
+		shakex = 0;
 		GetClientRect(hWnd, &rect);
 		init_blocks();
 		srand(time(NULL));
@@ -297,7 +304,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			}
 		}
 		
-
+		carmerax += shakex;
 		/*anchorx = mx;
 		anchory = my;
 
@@ -807,6 +814,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 				KillTimer(hWnd, 1);
 			}
 			
+			
 		}
 			break;
 		case 2:
@@ -991,11 +999,37 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 				ck = 1;
 			}
 
+			/*RECT thitbox;
+
+			thitbox.left = hitbox.left - 80;
+			thitbox.right = hitbox.right + 80;
+			thitbox.top = hitbox.top - 80;
+			thitbox.bottom = hitbox.bottom + 80;*/
+			//if (hypot()) {
+			if (hypot(px - launcherx, py - launchery) < 70) {
+				wireon = 0;
+
+				shakex = 5;
+				KillTimer(hWnd, 1);
+				SetTimer(hWnd, shake, 50, NULL);
+			}
+
 			if (ck) {
 				launchertimer = 0;
 				razoron = 1;
 				SetTimer(hWnd, lockon, 16, NULL);
 				KillTimer(hWnd, fire);
+			}
+		}
+			break;
+		case shake:
+		{
+			++shaketimer;
+			shakex *= -1;
+			if (shaketimer > 10) {
+				shaketimer = 0;
+				shakex = 0;
+				KillTimer(hWnd, shake);
 			}
 		}
 			break;
