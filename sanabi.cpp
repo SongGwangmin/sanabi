@@ -19,6 +19,7 @@
 #define lockon 11
 #define ready 12
 #define fire 13
+#define reload 15
 
 #define shake 20
 
@@ -147,6 +148,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	static int launchery;
 	static int launchertimer;
 	static int launcherdirection;
+	static int bosspaze;
+	static int readyspeed;
+	static int loadspeed;
 
 	//shake
 	static int shaketimer;
@@ -217,6 +221,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 		SetTimer(hWnd, animationtimer, 100, NULL);
 		SetTimer(hWnd, gravitytimer, 27, NULL);
+
+		readyspeed = 2000;
+		loadspeed = 1500;
 	}
 	break;
 	case WM_PAINT:
@@ -952,8 +959,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		{
 			lockdowntimer += 16;
 			razor_radian = atan2(bossy - py, bossx - px);
-			if (lockdowntimer > 2000) {
-				SetTimer(hWnd, ready, 1501, NULL);
+			if (lockdowntimer > readyspeed) {
+				SetTimer(hWnd, ready, loadspeed, NULL);
 				KillTimer(hWnd, lockon);
 			}
 		}
@@ -972,8 +979,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			else {
 				launcherdirection = -1;
 			}
-
-			SetTimer(hWnd, fire, 25, NULL);
+			
+			SetTimer(hWnd, fire, 23, NULL);
 			KillTimer(hWnd, ready);
 		}
 			break;
@@ -1015,6 +1022,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			}
 
 			if (ck) {
+				if (bosspaze == 1) {
+					int rnad = rand() % 6;
+					while (bossx == bosspos[rnad].x && bossy == bosspos[rnad].y) {
+						rnad = rand() % 6;
+					}
+
+					bossx = bosspos[rnad].x;
+					bossy = bosspos[rnad].y;
+					boss.left = bossx - 30;
+					boss.right = bossx + 30;
+					boss.top = bossy - 30;
+					boss.bottom = bossy + 30;
+				}
 				launchertimer = 0;
 				razoron = 1;
 				SetTimer(hWnd, lockon, 16, NULL);
@@ -1033,6 +1053,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			}
 		}
 			break;
+		case reload:
+		{
+			SetTimer(hWnd, lockon, 16, NULL);
+			razoron = 1;
+			lockdowntimer = 0;
+			KillTimer(hWnd, reload);
+		}
+			break;
 		}
 	}
 	InvalidateRect(hWnd, NULL, 0);
@@ -1043,7 +1071,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		my = HIWORD(lParam);
 
 		
-		if (anchorinblock && !wireon) {
+		if (anchorinblock == 1 && !wireon) {
 			wireon = 1;
 			radian = atan2(my - prelativey, mx - prelativex);
 			//length = sqrt(((mx - player.x1) * (mx - player.x1)) + ((my - player.y1) * (my - player.y1)));
@@ -1072,6 +1100,83 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 
 
 			SetTimer(hWnd, 1, 25, NULL);
+		}
+		else if (anchorinblock == 2 && !wireon) {
+			px = bossx;
+			py = bossy - 30;
+
+			int rnad = rand() % 6;
+			switch (bosspaze) {
+			case 0:
+			{
+				while (bossx == bosspos[rnad].x && bossy == bosspos[rnad].y) {
+					rnad = rand() % 6;
+				}
+				bossx = bosspos[rnad].x;
+				bossy = bosspos[rnad].y;
+				boss.left = bossx - 30;
+				boss.right = bossx + 30;
+				boss.top = bossy - 30;
+				boss.bottom = bossy + 30;
+
+				KillTimer(hWnd, lockon);
+				KillTimer(hWnd, ready);
+				KillTimer(hWnd, fire);
+				KillTimer(hWnd, reload);
+
+				lockdowntimer = 0;
+				launchertimer = 0;
+				SetTimer(hWnd, reload, 1500, NULL);
+				launcherx = -80;
+				launchery = -80;
+				bosspaze = 1;
+			}
+				break;
+			case 1:
+			{
+				rnad = 6;
+				
+				bossx = bosspos[rnad].x;
+				bossy = bosspos[rnad].y;
+				boss.left = bossx - 30;
+				boss.right = bossx + 30;
+				boss.top = bossy - 30;
+				boss.bottom = bossy + 30;
+				KillTimer(hWnd, lockon);
+				KillTimer(hWnd, ready);
+				KillTimer(hWnd, fire);
+				KillTimer(hWnd, reload);
+
+				lockdowntimer = 0;
+				launchertimer = 0;
+				SetTimer(hWnd, reload, 1500, NULL);
+				launcherx = -80;
+				launchery = -80;
+
+				readyspeed = 1000;
+				loadspeed = 500;
+				bosspaze = 2;
+			}
+				break;
+			case 2:
+			{
+
+				bossx = 8000;
+				bossy = 8000;
+				launcherx = -80;
+				launchery = -80;
+				KillTimer(hWnd, lockon);
+				KillTimer(hWnd, ready);
+				KillTimer(hWnd, fire);
+				KillTimer(hWnd, reload);
+			}
+				break;
+			}
+
+
+			
+
+			
 		}
 
 		InvalidateRect(hWnd, NULL, 0);
