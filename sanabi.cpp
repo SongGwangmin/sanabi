@@ -141,6 +141,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	static int relativebossx;
 	static int relativebossy;
 	static int bossanitimer;
+	static int launcherx;
+	static int launchery;
+	static int launchertimer;
+	static int launcherdirection;
 
 	switch (iMessage) {
 	case WM_CREATE:
@@ -410,6 +414,41 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 			TransparentBlt(mDC, relativebossx - 40, relativebossy - 40, 80, 80, reverseDC, 80, 0, 80, 80, RGB(255, 255, 255));
 		}
 
+		if (launchertimer != 0) {
+			FillRect(ptempDC, &rect, (HBRUSH)GetStockObject(WHITE_BRUSH));
+			int relativelauncherx = launcherx - carmerax + xmiddle;
+			int relativelaunchery = launchery - carmeray + ymiddle;
+			StretchBlt(reverseDC, 240, 240, 80, 80, bossDC, 240, 240, 80, 80, SRCCOPY);
+			/*if (launcherdirection == -1) { // boss have to gaze right
+				//StretchBlt(reverseDC, 160, 0, 80, 80, bossDC, 240, 240, 80, 80, SRCCOPY);
+			}
+			else {
+				//StretchBlt(reverseDC, 160, 0, 80, 80, bossDC, 240 + 80, 240, -80, 80, SRCCOPY);
+				StretchBlt(reverseDC, 240, 240, 80, 80, bossDC, 240 + 80, 240, -80, 80, SRCCOPY);
+			}*/
+
+			POINT outPts[3];
+			double cosA = cos(razor_radian);
+			double sinA = sin(razor_radian);
+			int hw = 40;
+			int hh = 40;
+
+
+			outPts[0].x = static_cast<LONG>(3 * 80 + 40 + (-hw * cosA - (-hh) * sinA));
+			outPts[0].y = static_cast<LONG>(3 * 80 + 40 + (-hw * sinA + (-hh) * cosA));
+
+			// 오른쪽 위
+			outPts[1].x = static_cast<LONG>(3 * 80 + 40 + (hw * cosA - (-hh) * sinA));
+			outPts[1].y = static_cast<LONG>(3 * 80 + 40 + (hw * sinA + (-hh) * cosA));
+
+			// 왼쪽 아래
+			outPts[2].x = static_cast<LONG>(3 * 80 + 40 + (-hw * cosA - hh * sinA));
+			outPts[2].y = static_cast<LONG>(3 * 80 + 40 + (-hw * sinA + hh * cosA));
+
+			PlgBlt(ptempDC, outPts, reverseDC, 240, 240, 80, 80, NULL, 0, 0);
+			
+			TransparentBlt(mDC, relativelauncherx - 40, relativelaunchery - 40, 80, 80, ptempDC, 240, 240, 80, 80, RGB(255, 255, 255));
+		}
 		
 
 		mx = anchorx - carmerax + xmiddle;
@@ -502,6 +541,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		}
 
 		if (wParam == 'q') {
+
 			PostQuitMessage(0);
 		}
 
@@ -904,7 +944,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		{
 			lockdowntimer += 16;
 			razor_radian = atan2(bossy - py, bossx - px);
-			if (lockdowntimer > 5000) {
+			if (lockdowntimer > 2000) {
 				SetTimer(hWnd, ready, 1501, NULL);
 				KillTimer(hWnd, lockon);
 			}
@@ -914,15 +954,49 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		{
 			razoron = 0;
 			lockdowntimer = 0;
-			SetTimer(hWnd, fire, 1501, NULL);
+			launcherx = bossx;
+			launchery = bossy;
+			launchertimer = 0;
+
+			if (px > bossx) {
+				launcherdirection = 1;
+			}
+			else {
+				launcherdirection = -1;
+			}
+
+			SetTimer(hWnd, fire, 25, NULL);
 			KillTimer(hWnd, ready);
 		}
 			break;
 		case fire: 
 		{
-			razoron = 1;
-			SetTimer(hWnd, lockon, 16, NULL);
-			KillTimer(hWnd, fire);
+			launchertimer += 20;
+
+			launcherx = bossx - cos(razor_radian) * launchertimer;
+			launchery = bossy - sin(razor_radian) * launchertimer;
+
+			int ck = 0;
+
+			if (launcherx < 0 - 40) {
+				ck = 1;
+			}
+			if (launcherx > 2023 + 40) {
+				ck = 1;
+			}
+			if (launchery < 0 - 40) {
+				ck = 1;
+			}
+			if (launchery > 1331 + 40) {
+				ck = 1;
+			}
+
+			if (ck) {
+				launchertimer = 0;
+				razoron = 1;
+				SetTimer(hWnd, lockon, 16, NULL);
+				KillTimer(hWnd, fire);
+			}
 		}
 			break;
 		}
